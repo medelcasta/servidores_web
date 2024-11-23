@@ -1,0 +1,23 @@
+table {
+    border: 2px solid palegreen;
+}
+
+th, td{
+    border:2px solid pink;
+}
+
+caption{
+    border: 2px solid paleturquoise;
+}
+
+.aprobado{
+    background-color: green;
+}
+
+.suspenso{
+    background-color: red;
+}
+
+.matricula{
+    background-color: gold;
+}
