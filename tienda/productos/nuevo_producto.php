@@ -21,7 +21,7 @@
         <?php
         if($_SERVER["REQUEST_METHOD"] == "POST") {
             $nombre = $_POST["nombre"];
-            $precio = $_POST["nombre_estudio"];
+            $precio = $_POST["precio"];
             $categoria = $_POST["categoria"];
             $stock = $_POST["stock"];
             $descripcion = $_POST["descripcion"];

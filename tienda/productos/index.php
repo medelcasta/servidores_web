@@ -49,7 +49,6 @@
                         echo "<td>" . $fila["precio"] ."</td>";
                         echo "<td>" . $fila["categoria"] ."</td>";
                         echo "<td>" . $fila["stock"] ."</td>";
-                        echo "<td>" . $fila["descripcion"] ."</td>";
                         ?>
                         <td>
                             <img width="100" height="200" src="<?php echo $fila["imagen"] ?> ">
