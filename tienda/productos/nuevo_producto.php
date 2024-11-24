@@ -20,11 +20,11 @@
         <h1>Añadir Producto</h1>
         <?php
         if($_SERVER["REQUEST_METHOD"] == "POST") {
-            $nombre = $_POST["nombre"];
-            $precio = $_POST["precio"];
+            $tmp_nombre = $_POST["nombre"];
+            $tmp_precio = $_POST["precio"];
             $categoria = $_POST["categoria"];
-            $stock = $_POST["stock"];
-            $descripcion = $_POST["descripcion"];
+            $tmp_stock = $_POST["stock"];
+            $tmp_descripcion = $_POST["descripcion"];
             /**
              * $_FILES -> que es un array BIDIMENSIONAL
              */
@@ -34,11 +34,66 @@
             $ubicacion_final = "./imagenes/$imagen";
 
             move_uploaded_file($ubicacion_temporal, $ubicacion_final);
+            if($tmp_nombre == ''){
+                $err_nombre = 'El nombre es obligatorio!';
+            }else {
+                if(strlen($tmp_nombre) > 255) {
+                    $err_nombre = "El nombre no puede contener mas de 50 caracteres";
+                } 
+                else {
+                    $nombre = $tmp_nombre;
+                } 
+            }
 
-            $sql = "INSERT INTO productos (nombre, precio, categoria, stock, imagen, descripcion) 
+            if($tmp_precio == ''){
+                $err_precio = "El precio es obligatorio!";
+            }else{
+                if(!filter_var($tmp_precio, FILTER_VALIDATE_FLOAT)){
+                    $err_precio = "El precio debe ser un numero!";
+                }else{
+                    $patron = "/^[0-9]{1,4}(\.[0-9]{1,2})$/";
+                    if(!preg_match($patron, $tmp_precio)){
+                        $err_precio = "El precio no debe superar los 9999, ni ser inferior a 0 ni contener mas de 2 decimales";
+                    }else{
+                        $precio = $tmp_precio;
+                    }
+                }
+            }
+
+            if($tmp_stock == ''){
+                $stock = 0;
+            }else{
+                if(!filter_var($tmp_precio, FILTER_VALIDATE_INT)){
+                    $err_stock = "El stock debe ser un numero entero (sin decimales)!";
+                }else{
+                    if($tmp_stock > 1000) {
+                        $err_stock = "El stock no puede ser superior a 1000";
+                    } 
+                    else {
+                        $stock = $tmp_stock;
+                    } 
+                }
+            }
+
+
+
+            if($tmp_descripcion == ''){
+                $err_descripcion= 'La descripcion es obligatoria!';
+            }else {
+                if(strlen($tmp_descripcion) > 255) {
+                    $err_descripcion = "La descripcion no puede contener mas de 255 caracteres";
+                } 
+                else {
+                    $descripcion = $tmp_descripcion;
+                } 
+            }
+            if(isset($nombre) && isset($precio) && isset($stock) && isset($descripcion)){
+                $sql = "INSERT INTO productos (nombre, precio, categoria, stock, imagen, descripcion) 
                 VALUES ('$nombre', $precio, '$categoria', $stock, '$ubicacion_final', '$descripcion')";
 
-            $_conexion -> query($sql);
+                $_conexion -> query($sql);
+            }
+            
         }
 
         $sql = "SELECT * FROM categorias ORDER BY categoria";

@@ -26,15 +26,29 @@
 
         if($_SERVER["REQUEST_METHOD"] == "POST"){
             $categoria = $_POST["categoria"];
-            $descripcion = $_POST["descripcion"];
+            $tmp_descripcion = $_POST["descripcion"];
 
-            $sql = "UPDATE categorias SET
+            if($tmp_descripcion == ''){
+                $err_descripcion= 'La descripcion es obligatoria!';
+            }else {
+                if(strlen($tmp_descripcion) > 255) {
+                    $err_descripcion = "La descripcion no puede contener mas de 255 caracteres";
+                } 
+                else {
+                    $descripcion = $tmp_descripcion;
+                } 
+            }
+
+            if(isset($descripcion)){
+                $sql = "UPDATE categorias SET
                 categoria = '$categoria',
                 descripcion = '$descripcion'
                 WHERE categoria = '$categoria'
-            ";
+                ";
 
-            $_conexion -> query($sql);
+                $_conexion -> query($sql);
+            }
+            
         }
         ?>
         <form class="col-6" action="" method="post" enctype="multipart/form-data">

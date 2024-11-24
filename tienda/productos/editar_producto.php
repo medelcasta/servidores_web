@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <?php require '../util/conexion.php'; ?>
+    <?php 
+        require '../util/conexion.php';
+        error_reporting( E_ALL );
+        ini_set( "display_errors", 1);
+    ?>
 </head>
 <body>
 <div class="container">
@@ -18,11 +22,11 @@
         
         while($fila = $resultado -> fetch_assoc()) {
             $nombre = $fila["nombre"];
-            $precio = $_POST["precio"];
-            $categoria = $_POST["categoria"];
-            $stock = $_POST["stock"];
+            $precio = $fila["precio"];
+            $categoria = $fila["categoria"];
+            $stock = $fila["stock"];
             $imagen = $fila["imagen"];
-            $descripcion = $_POST["descripcion"];
+            $descripcion = $fila["descripcion"];
         }
 
         $sql = "SELECT * FROM categorias ORDER BY categoria";
@@ -35,7 +39,7 @@
 
 
         if($_SERVER["REQUEST_METHOD"] == "POST"){
-            $nombre = $fila["nombre"];
+            $nombre = $_POST["nombre"];
             $precio = $_POST["precio"];
             $categoria = $_POST["categoria"];
             $stock = $_POST["stock"];
@@ -46,7 +50,7 @@
                 precio = $precio,
                 categoria = '$categoria',
                 stock = $stock,
-                descripcion = $stock
+                descripcion = '$descripcion'
                 WHERE id_producto = $id_producto
             ";
 

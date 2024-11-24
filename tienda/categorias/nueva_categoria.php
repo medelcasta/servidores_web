@@ -37,7 +37,6 @@
 
             if($tmp_descripcion == ''){
                 $err_descripcion= 'La descripcion es obligatoria!';
-
             }else {
                 if(strlen($tmp_descripcion) > 255) {
                     $err_descripcion = "La descripcion no puede contener mas de 255 caracteres";
@@ -69,7 +68,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Descripcion</label>
-                <input class="form-control" type="text" name="descripcion">
+                <input class="form-control" type="textarea" name="descripcion">
                 <?php if(isset($err_descripcion)) echo "<span class='error'>$err_descripcion</span>" ?>
             </div>
             <div class="mb-3">
