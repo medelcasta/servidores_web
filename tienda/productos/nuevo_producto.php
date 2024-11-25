@@ -8,6 +8,8 @@
     <?php 
         require '../util/conexion.php'; 
         require '../util/depurar.php';
+        error_reporting( E_ALL );
+        ini_set("display_errors", 1 );  
     ?>
     <style>
         .error {
@@ -20,21 +22,23 @@
         <h1>Añadir Producto</h1>
         <?php
         if($_SERVER["REQUEST_METHOD"] == "POST") {
-            $tmp_nombre = $_POST["nombre"];
-            $tmp_precio = $_POST["precio"];
+            $nombre = $_POST["nombre"];
+            $precio = $_POST["precio"];
             $categoria = $_POST["categoria"];
-            $tmp_stock = $_POST["stock"];
-            $tmp_descripcion = $_POST["descripcion"];
+            $stock = $_POST["stock"];
+            $descripcion = $_POST["descripcion"];
             /**
              * $_FILES -> que es un array BIDIMENSIONAL
              */
             //var_dump($_FILES["imagen"]);
-            $imagen = $_FILES["imagen"]["name"];
+        
+            $nombre_imagen = $_FILES["imagen"]["name"];
             $ubicacion_temporal = $_FILES["imagen"]["tmp_name"];
-            $ubicacion_final = "./imagenes/$imagen";
+            $ubicacion_final = "../imagenes/$nombre_imagen";
 
             move_uploaded_file($ubicacion_temporal, $ubicacion_final);
-            if($tmp_nombre == ''){
+
+          /* if($tmp_nombre == ''){
                 $err_nombre = 'El nombre es obligatorio!';
             }else {
                 if(strlen($tmp_nombre) > 255) {
@@ -86,13 +90,13 @@
                 else {
                     $descripcion = $tmp_descripcion;
                 } 
-            }
-            if(isset($nombre) && isset($precio) && isset($stock) && isset($descripcion)){
+            }*/
+           // if(isset($nombre) && isset($precio) && isset($stock) && isset($descripcion)){
                 $sql = "INSERT INTO productos (nombre, precio, categoria, stock, imagen, descripcion) 
                 VALUES ('$nombre', $precio, '$categoria', $stock, '$ubicacion_final', '$descripcion')";
 
                 $_conexion -> query($sql);
-            }
+            //}
             
         }
 
