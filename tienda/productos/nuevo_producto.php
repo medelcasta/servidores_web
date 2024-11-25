@@ -22,11 +22,11 @@
         <h1>Añadir Producto</h1>
         <?php
         if($_SERVER["REQUEST_METHOD"] == "POST") {
-            $nombre = $_POST["nombre"];
-            $precio = $_POST["precio"];
-            $categoria = $_POST["categoria"];
-            $stock = $_POST["stock"];
-            $descripcion = $_POST["descripcion"];
+            $tmp_nombre = $_POST["nombre"];
+            $tmp_precio = $_POST["precio"];
+            $tmp_categoria = $_POST["categoria"];
+            $tmp_stock = $_POST["stock"];
+            $tmp_descripcion = $_POST["descripcion"];
             /**
              * $_FILES -> que es un array BIDIMENSIONAL
              */
@@ -36,9 +36,9 @@
             $ubicacion_temporal = $_FILES["imagen"]["tmp_name"];
             $ubicacion_final = "../imagenes/$nombre_imagen";
 
-            move_uploaded_file($ubicacion_temporal, $ubicacion_final);
+            
 
-          /* if($tmp_nombre == ''){
+          if($tmp_nombre == ''){
                 $err_nombre = 'El nombre es obligatorio!';
             }else {
                 if(strlen($tmp_nombre) > 255) {
@@ -79,6 +79,17 @@
                 }
             }
 
+            if($nombre_imagen == ''){
+                $err_imagen = 'El imagen es obligatoria!';
+            }else {
+                if(strlen($ubicacion_final) > 60) {
+                    $err_imagen= "La imagen no puede contener mas de 60 caracteres";
+                } 
+                else {
+                    move_uploaded_file($ubicacion_temporal, $ubicacion_final);
+                    $imagen = $nombre_imagen;
+                } 
+            }
 
 
             if($tmp_descripcion == ''){
@@ -90,13 +101,13 @@
                 else {
                     $descripcion = $tmp_descripcion;
                 } 
-            }*/
-           // if(isset($nombre) && isset($precio) && isset($stock) && isset($descripcion)){
+            }
+           if(isset($nombre) && isset($precio) && isset($stock) && isset($descripcion) && isset($imagen)){
                 $sql = "INSERT INTO productos (nombre, precio, categoria, stock, imagen, descripcion) 
                 VALUES ('$nombre', $precio, '$categoria', $stock, '$ubicacion_final', '$descripcion')";
 
                 $_conexion -> query($sql);
-            //}
+            }
             
         }
 
@@ -113,10 +124,12 @@
             <div class="mb-3">
                 <label class="form-label">Nombre</label>
                 <input class="form-control" type="text" name="nombre">
+                <?php if(isset($err_nombre)) echo "<span class='error'>$err_nombre</span>" ?>
             </div>
             <div class="mb-3">
                 <label class="form-label">Precio</label>
                 <input class="form-control" type="text" name="precio">
+                <?php if(isset($err_precio)) echo "<span class='error'>$err_precio</span>" ?>
             </div>
             <div class="mb-3">
                 <label class="form-label">Categoria</label>
@@ -129,18 +142,22 @@
                         </option>
                     <?php } ?>
                 </select>
+
             </div>
             <div class="mb-3">
                 <label class="form-label">Stock</label>
                 <input class="form-control" type="text" name="stock">
+                <?php if(isset($err_stock)) echo "<span class='error'>$err_stock</span>" ?>
             </div>
             <div class="mb-3">
                 <label class="form-label">Imagen</label>
                 <input class="form-control" type="file" name="imagen">
+                <?php if(isset($err_imagen)) echo "<span class='error'>$err_imagen</span>" ?>
             </div>
             <div class="mb-3">
                 <label class="form-label">Descripcion</label>
                 <input class="form-control" type="textarea" name="descripcion">
+                <?php if(isset($err_descripcion)) echo "<span class='error'>$err_descripcion</span>" ?>
             </div>
             <div class="mb-3">
                 <input class="btn btn-primary" type="submit" value="Insertar">
