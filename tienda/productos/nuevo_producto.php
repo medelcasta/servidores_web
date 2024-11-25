@@ -64,6 +64,20 @@
                 }
             }
 
+            if($tmp_categoria == ''){
+                $err_categoria = 'La categoria es obligatoria!';
+            }else {
+                if(strlen($tmp_categoria) > 30) {
+                    $err_categoria = "La categoria no puede contener mas de 30 caracteres";
+                } 
+                else {
+                    if(!in_array($tmp_categoria, $categorias_array)){
+                        $err_categoria = "La categoria no es correcta";
+                    }else{
+                        $categoria = $tmp_categoria;
+                    }
+                }
+            }
             if($tmp_stock == ''){
                 $stock = 0;
             }else{
@@ -102,6 +116,7 @@
                     $descripcion = $tmp_descripcion;
                 } 
             }
+
            if(isset($nombre) && isset($precio) && isset($stock) && isset($descripcion) && isset($imagen)){
                 $sql = "INSERT INTO productos (nombre, precio, categoria, stock, imagen, descripcion) 
                 VALUES ('$nombre', $precio, '$categoria', $stock, '$ubicacion_final', '$descripcion')";
