@@ -15,7 +15,6 @@
 <div class="container">
         <h1>Editar Producto</h1>
         <?php
-
         $id_producto = $_GET["id_producto"];
         $sql = "SELECT * FROM productos WHERE id_producto = $id_producto";
         $resultado = $_conexion -> query($sql);

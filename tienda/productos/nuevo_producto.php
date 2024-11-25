@@ -78,7 +78,7 @@
 
 
             if($tmp_descripcion == ''){
-                $err_descripcion= 'La descripcion es obligatoria!';
+                $err_descripcion = 'La descripcion es obligatoria!';
             }else {
                 if(strlen($tmp_descripcion) > 255) {
                     $err_descripcion = "La descripcion no puede contener mas de 255 caracteres";
