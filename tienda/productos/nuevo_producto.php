@@ -22,11 +22,12 @@
         <h1>Añadir Producto</h1>
         <?php
         if($_SERVER["REQUEST_METHOD"] == "POST") {
-            $tmp_nombre = $_POST["nombre"];
-            $tmp_precio = $_POST["precio"];
-            $tmp_categoria = $_POST["categoria"];
-            $tmp_stock = $_POST["stock"];
-            $tmp_descripcion = $_POST["descripcion"];
+            $tmp_nombre = depurar($_POST["nombre"]);
+            $tmp_precio = depurar($_POST["precio"]);
+            if(isset($_POST["categoria"])) $tmp_categoria = depurar($_POST["categoria"]);
+            else $tmp_categoria = "";
+            $tmp_stock = depurar($_POST["stock"]);
+            $tmp_descripcion = depurar($_POST["descripcion"]);
             /**
              * $_FILES -> que es un array BIDIMENSIONAL
              */
@@ -117,7 +118,7 @@
                 } 
             }
 
-           if(isset($nombre) && isset($precio) && isset($stock) && isset($descripcion) && isset($imagen)){
+           if(isset($nombre) && isset($precio) && isset($stock) && isset($descripcion) && isset($imagen) && isset($categoria)){
                 $sql = "INSERT INTO productos (nombre, precio, categoria, stock, imagen, descripcion) 
                 VALUES ('$nombre', $precio, '$categoria', $stock, '$ubicacion_final', '$descripcion')";
 
