@@ -9,23 +9,50 @@
         error_reporting( E_ALL );
         ini_set("display_errors", 1 ); 
         require ('../util/conexion.php'); 
+        require ('../util/depurar.php'); 
     ?>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Registro</h1>
         <?php 
             if($_SERVER["REQUEST_METHOD"] == "POST"){
-                $usuario = $_POST["usuario"];
-                $contrasena = $_POST["contrasena"];
+                $tmp_usuario = depurar($_POST["usuario"]);
+                $tmp_contrasena = depurar($_POST["contrasena"]);
 
-                $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);
+                if($tmp_usuario == ''){
+                    $err_usuario = "El usuario es obligorio";
+                }else{
+                    if(strlen($tmp_usuario) > 15){
+                        $err_usuario = "El usuario no puede contener mas de 15 caracteres";
+                    }else{
+                        $usuario = $tmp_usuario;
+                    }
+                }
 
-                $sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada')";
+                if($tmp_contrasena == ''){
+                    $err_contrasena = "La contraseña es obligatoria";
+                }else{
+                    if(strlen($tmp_contrasena) > 255){
+                        $err_contrasena = "La contraseña no puede contener mas de 255 caracteres";
+                    }else{
+                        $contrasena = $tmp_contrasena;
+                        $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);
+                    }
+                }
+                
+                if(isset($usuario) && isset($contrasena)){
+                    $sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada')";
 
-                $_conexion -> query($sql);
-                header("location: iniciar_sesion.php");
-                exit;
+                    $_conexion -> query($sql);
+                    header("location: iniciar_sesion.php");
+                    exit;
+                }
             }
         ?>
         <form class="col-6" action="" method="post" enctype="multipart/form-data">
@@ -33,10 +60,12 @@
             <div class="mb-3">
                 <label class="form-label">Usuario</label>
                 <input class="form-control" type="text" name="usuario">
+                <?php if(isset($err_usuario)) echo "<span class='error'>$err_usuario</span>" ?>
             </div>
             <div class="mb-3">
                 <label class="form-label">Contraseña</label>
                 <input class="form-control" type="password" name="contrasena">
+                <?php if(isset($err_contrasena)) echo "<span class='error'>$err_contrasena</span>" ?>
             </div>
             <div class="mb-3">
                 <input class="btn btn-primary" type="submit" value="Registrarse">

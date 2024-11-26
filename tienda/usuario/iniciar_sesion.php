@@ -9,42 +9,71 @@
         error_reporting( E_ALL );
         ini_set("display_errors", 1 ); 
         require ('../util/conexion.php'); 
+        require ('../util/depurar.php');
     ?>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Iniciar Sesión</h1>
         <?php 
             if($_SERVER["REQUEST_METHOD"] == "POST"){
-                $usuario = $_POST["usuario"];
-                $contrasena = $_POST["contrasena"];
+                $tmp_usuario = depurar($_POST["usuario"]);
+                $tmp_contrasena = depurar($_POST["contrasena"]);
 
-               $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
-               $resultado = $_conexion -> query($sql);
-               //var_dump($resultado);
-
-                if($resultado -> num_rows == 0){
-                    $err_usuario = "El usuario no existe";
+                if($tmp_usuario == ''){
+                    $err_usuario = "El usuario es obligorio";
                 }else{
-                    $datos_usuario = $resultado -> fetch_assoc();
-                    /**
-                     * Podemos acceder: 
-                     * 
-                     * $datos_usuario["usuario"];
-                     * $datos_usuario["contrasena"];
-                     */
-
-                    $acceso_concedido = password_verify($contrasena, $datos_usuario["contrasena"]); //inversa de password hash
-                    if($acceso_concedido){
-                        //todo guay
-                        session_start();
-                        $_SESSION["usuario"] = $usuario;
-                        //$_COOKIES["loquesea"] = "loquesea";
-                        header("location: ../index.php");
+                    if(strlen($tmp_usuario) > 15){
+                        $err_usuario = "El usuario no puede contener mas de 15 caracteres";
                     }else{
-                        $err_contrasena = "La contraseña es incorrecta";
+                        $usuario = $tmp_usuario;
                     }
                 }
+
+                if($tmp_contrasena == ''){
+                    $err_contrasena = "La contraseña es obligatoria";
+                }else{
+                    if(strlen($tmp_contrasena) > 255){
+                        $err_contrasena = "La contraseña no puede contener mas de 255 caracteres";
+                    }else{
+                        $contrasena = $tmp_contrasena;
+                    }
+                }
+
+                if(isset($usuario) && isset($contrasena)){
+                    $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
+                    $resultado = $_conexion -> query($sql);
+                    //var_dump($resultado);
+
+                    if($resultado -> num_rows == 0){
+                        $err_usuario = "El usuario no existe";
+                    }else{
+                        $datos_usuario = $resultado -> fetch_assoc();
+                        /**
+                         * Podemos acceder: 
+                         * 
+                         * $datos_usuario["usuario"];
+                         * $datos_usuario["contrasena"];
+                         */
+
+                        $acceso_concedido = password_verify($contrasena, $datos_usuario["contrasena"]); //inversa de password hash
+                        if($acceso_concedido){
+                            //todo guay
+                            session_start();
+                            $_SESSION["usuario"] = $usuario;
+                            //$_COOKIES["loquesea"] = "loquesea";
+                            header("location: ../categorias/index.php");
+                        }else{
+                            $err_contrasena = "La contraseña es incorrecta";
+                        }
+                    }
+                }
+               
             }
         ?>
         <form class="col-6" action="" method="post" enctype="multipart/form-data">
