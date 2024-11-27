@@ -25,22 +25,36 @@
                 $tmp_usuario = depurar($_POST["usuario"]);
                 $tmp_contrasena = depurar($_POST["contrasena"]);
 
+                //si se inserta usuario con mismo nombre
+                //select * from usuarios num row = 0 para que te puedas registrar
+                
                 if($tmp_usuario == ''){
                     $err_usuario = "El usuario es obligorio";
                 }else{
-                    if(strlen($tmp_usuario) > 15){
-                        $err_usuario = "El usuario no puede contener mas de 15 caracteres";
-                    }else{
-                        $usuario = $tmp_usuario;
+                    $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
+                    $resultado = $_conexion -> query($sql);
+                    
+                    if($resultado -> num_rows == 1){
+                        $err_usuario = "El usuario $tmp_usuario ya existe";
+                    }else{       
+                        if(strlen($tmp_usuario) < 3 ||  strlen($tmp_usuario) > 15){
+                            $err_usuario = "El usuario no puede contener mas de 15 caracteres";
+                        }else{
+                            $usuario = $tmp_usuario;
+                        }
                     }
                 }
 
                 if($tmp_contrasena == ''){
                     $err_contrasena = "La contraseña es obligatoria";
                 }else{
-                    if(strlen($tmp_contrasena) > 255){
+                    if(strlen($tmp_contrasena) < 8 || strlen($tmp_contrasena) > 255){
                         $err_contrasena = "La contraseña no puede contener mas de 255 caracteres";
                     }else{
+                        $patron = "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$";
+                        if(!preg_match($patron, $tmp_contrasena)){
+                            $err_contrasena = "La contraseña solo puede contener mayusculas, minusculas, algun numero y caractreres especiales";
+                        }
                         $contrasena = $tmp_contrasena;
                         $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);
                     }

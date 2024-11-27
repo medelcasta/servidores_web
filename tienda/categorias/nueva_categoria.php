@@ -30,16 +30,31 @@
             $tmp_categoria = depurar($_POST["categoria"]);
             $tmp_descripcion = depurar($_POST["descripcion"]);
 
+
             if($tmp_categoria == ''){
                 $err_categoria = 'La categoria es obligatoria!';
 
             }else {
-                if(strlen($tmp_categoria) > 30) {
-                    $err_categoria = "La categoria no puede contener mas de 30 caracteres";
-                } 
-                else {
-                    $categoria = ucwords(strtolower($tmp_categoria));
-                } 
+                $sql = "SELECT * FROM categorias WHERE categoria = '$categoria'";
+                $resultado = $_conexion -> query($sql);
+                    
+                if($resultado -> num_rows == 1){
+                    $err_categoria = "La categoria $tmp_categoria ya existe";
+                }else{
+                    if(strlen($tmp_categoria) < 2 || strlen($tmp_categoria) > 30) {
+                        $err_categoria = "La categoria no puede contener mas de 30 caracteres";
+                    } 
+                    else {
+                        //solo puede tener letras y espacio en blanco
+                        $patron = "/^[A-Za-z áéíóúÁEÍÓÚñÑ]+/";
+                        if(!preg_match($patron, $tmp_categoria)){
+                            $err_categoria = "La categoria solo puede contener letras o espacios en blanco";
+                        }
+                        else{
+                            $categoria = $tmp_categoria;
+                        }
+                    } 
+                }
             }
 
             if($tmp_descripcion == ''){

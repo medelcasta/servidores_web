@@ -46,13 +46,14 @@
 
             
 
-          if($tmp_nombre == ''){
+            if($tmp_nombre == ''){
                 $err_nombre = 'El nombre es obligatorio!';
             }else {
-                if(strlen($tmp_nombre) > 255) {
+                if(strlen($tmp_nombre) < 2 ||strlen($tmp_nombre) > 50) {
                     $err_nombre = "El nombre no puede contener mas de 50 caracteres";
                 } 
                 else {
+                    //solo puede tener letras espacios en blanco y numeros
                     $nombre = $tmp_nombre;
                 } 
             }
@@ -63,7 +64,8 @@
                 if(!filter_var($tmp_precio, FILTER_VALIDATE_FLOAT)){
                     $err_precio = "El precio debe ser un numero!";
                 }else{
-                    $patron = "/^[0-9]{1,4}(\.[0-9]{1,2})$/";
+                    //minimo 0 y maximo bbdd
+                    $patron = "/^[0-9]{1,4}(\.[0-9]{1,2})?$/";
                     if(!preg_match($patron, $tmp_precio)){
                         $err_precio = "El precio no debe superar los 9999, ni ser inferior a 0 ni contener mas de 2 decimales";
                     }else{
@@ -71,19 +73,22 @@
                     }
                 }
             }
+            
+            $sql = "SELECT * FROM categorias ORDER BY categoria";
+            $resultado = $_conexion -> query($sql);
+            $categorias_array = []; // aqui añadimos los estudios que encontremos en la base de datos y luego mostraremos este con el select
+
+            while($fila = $resultado -> fetch_assoc()){
+                array_push($categorias_array, $fila["categoria"]);
+            }
 
             if($tmp_categoria == ''){
                 $err_categoria = 'La categoria es obligatoria!';
             }else {
-                if(strlen($tmp_categoria) > 30) {
-                    $err_categoria = "La categoria no puede contener mas de 30 caracteres";
-                } 
-                else {
-                    if(!in_array($tmp_categoria, $categorias_array)){
-                        $err_categoria = "La categoria no es correcta";
-                    }else{
-                        $categoria = $tmp_categoria;
-                    }
+                if(!in_array($tmp_categoria, $categorias_array)){
+                    $err_categoria = "La categoria no es correcta";
+                }else{
+                    $categoria = $tmp_categoria;
                 }
             }
             if($tmp_stock == ''){
@@ -92,6 +97,7 @@
                 if(!filter_var($tmp_precio, FILTER_VALIDATE_INT)){
                     $err_stock = "El stock debe ser un numero entero (sin decimales)!";
                 }else{
+                    //maximo lo que aguante la bbdd
                     if($tmp_stock > 1000) {
                         $err_stock = "El stock no puede ser superior a 1000";
                     } 
@@ -101,10 +107,11 @@
                 }
             }
 
+            //no hace falta, si alguien quiere podeis buscaros la vida y puntuara favorablemente
             if($nombre_imagen == ''){
                 $err_imagen = 'El imagen es obligatoria!';
             }else {
-                if(strlen($ubicacion_final) > 60) {
+                if(strlen($nombre_imagen) > 60) { 
                     $err_imagen= "La imagen no puede contener mas de 60 caracteres";
                 } 
                 else {
@@ -127,7 +134,7 @@
 
            if(isset($nombre) && isset($precio) && isset($stock) && isset($descripcion) && isset($imagen) && isset($categoria)){
                 $sql = "INSERT INTO productos (nombre, precio, categoria, stock, imagen, descripcion) 
-                VALUES ('$nombre', $precio, '$categoria', $stock, '$ubicacion_final', '$descripcion')";
+                VALUES ('$nombre', $precio, '$categoria', $stock, '$imagen', '$descripcion')";
 
                 $_conexion -> query($sql);
             }

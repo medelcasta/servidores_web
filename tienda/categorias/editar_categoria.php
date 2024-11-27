@@ -6,7 +6,8 @@
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <?php 
-        require '../util/conexion.php'; 
+        require '../util/conexion.php';
+        require '../util/depurar.php';
         session_start();
         if(isset($_SESSION["usuario"])){
             echo "<h2>Bienvenid@ ". $_SESSION["usuario"] ."</h2>";
@@ -34,8 +35,8 @@
 
 
         if($_SERVER["REQUEST_METHOD"] == "POST"){
-            $categoria = $_POST["categoria"];
-            $tmp_descripcion = $_POST["descripcion"];
+            $categoria = depurar($_POST["categoria"]);
+            $tmp_descripcion = depurar($_POST["descripcion"]);
 
             if($tmp_descripcion == ''){
                 $err_descripcion= 'La descripcion es obligatoria!';

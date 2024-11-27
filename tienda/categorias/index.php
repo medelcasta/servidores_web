@@ -68,6 +68,7 @@
         </table>
         <a class="btn btn-secondary" href="nueva_categoria.php">Crear Nueva Categoria</a>
         <a class="btn btn-secondary" href="../productos/index.php">Ir a productos</a>
+        <a class="btn btn-secondary" href="../index.php">Volver a Inicio</a>
         <a class="btn btn-warning" href="../usuario/cerrar_sesion.php">Cerrar Sesion</a>
         <br><br>
     </div>

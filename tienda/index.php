@@ -8,19 +8,19 @@
     <?php
         error_reporting( E_ALL );
         ini_set("display_errors", 1 );  
-        require('../util/conexion.php');
+        require('./util/conexion.php');
+
         session_start();
         if(isset($_SESSION["usuario"])){
             echo "<h2>Bienvenid@ ". $_SESSION["usuario"] ."</h2>";
         }else{
-            header("location: ../usuario/iniciar_sesion.php");
-            exit;
+            echo "<h2>Usuario Invitado</h2>";
         }
     ?>
 </head>
 <body>
 <div class="container">
-        <h1>Los Productos</h1>
+        <h1>Pagina Principal</h1>
         <?php 
             if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $id_producto = $_POST["id_producto"];
@@ -42,8 +42,6 @@
                     <th>Stock</th>
                     <th>Imagen</th>
                     <th>Descripcion</th>
-                    <th></th>
-                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -56,30 +54,28 @@
                         echo "<td>" . $fila["stock"] ."</td>";
                 ?>
                         <td>
-                            <img width="100" height="200" src="../imagenes/<?php echo $fila["imagen"] ?> ">
+                            <img width="100" height="200" src="./imagenes/<?php echo $fila["imagen"] ?> ">
                         </td>
                         <?php
                         echo "<td>" . $fila["descripcion"] ."</td>";
                         ?>
-                        <td>
-                            <a class="btn btn-primary"  href="editar_producto.php?id_producto=<?php echo $fila["id_producto"] ?>">Editar</a>
-                        </td>
-                        <td>
-                            <form action="" method="post">
-                                <input type="hidden" name="id_producto" value="<?php echo $fila["id_producto"] ?>" > <!--COGENOS EL ID-->
-                                <input class="btn btn-danger" type="submit" value="Borrar">
-                            </form>
-                        </td>
+                        
                         <?php
                         echo "</tr>";
                     }
                 ?>
             </tbody>
         </table>
-        <a class="btn btn-secondary" href="nuevo_producto.php">Crear Nuevo Producto</a>
-        <a class="btn btn-warning" href="../usuario/cerrar_sesion.php">Cerrar Sesion</a>
-        <a class="btn btn-secondary" href="../index.php">Volver a Inicio</a>
-        <a class="btn btn-secondary" href="../categorias/index.php">Ir a categorias</a>
+        <?php
+        if(isset($_SESSION["usuario"])){ ?>
+            <a class="btn btn-warning" href="./usuario/cerrar_sesion.php">Cerrar Sesion</a>
+            <a class="btn btn-secondary" href="./categorias/index.php">Ir a Categorias</a>
+            <a class="btn btn-secondary" href="./productos/index.php">Ir a Productos</a>
+        <?php }else{?>
+            <a class="btn btn-warning" href="./usuario/iniciar_sesion.php">Iniciar Sesion</a>
+        <?php }
+        ?>
+        
         <br><br>
     </div>
     

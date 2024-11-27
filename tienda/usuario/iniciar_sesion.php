@@ -28,9 +28,10 @@
                 if($tmp_usuario == ''){
                     $err_usuario = "El usuario es obligorio";
                 }else{
-                    if(strlen($tmp_usuario) > 15){
+                    if(strlen($tmp_usuario) < 3 || strlen($tmp_usuario) > 15){
                         $err_usuario = "El usuario no puede contener mas de 15 caracteres";
                     }else{
+                        //y solo puede tener letras y numeros
                         $usuario = $tmp_usuario;
                     }
                 }
@@ -38,9 +39,10 @@
                 if($tmp_contrasena == ''){
                     $err_contrasena = "La contraseña es obligatoria";
                 }else{
-                    if(strlen($tmp_contrasena) > 255){
+                    if(strlen($tmp_contrasena) < 8 || strlen($tmp_contrasena) > 15){
                         $err_contrasena = "La contraseña no puede contener mas de 255 caracteres";
                     }else{
+                        //letras en mayus y minus, algun numero y puede tener caracteres especiales (consultar expresion enregexr)
                         $contrasena = $tmp_contrasena;
                     }
                 }
@@ -67,7 +69,7 @@
                             session_start();
                             $_SESSION["usuario"] = $usuario;
                             //$_COOKIES["loquesea"] = "loquesea";
-                            header("location: ../categorias/index.php");
+                            header("location: ../index.php");
                         }else{
                             $err_contrasena = "La contraseña es incorrecta";
                         }
@@ -90,11 +92,11 @@
             </div>
             <div class="mb-3">
                 <input class="btn btn-primary" type="submit" value="Iniciar Sesion">
+                <a class="btn btn-secondary" href="../index.php">Volver a Inicio</a>
             </div>
             <div class="mb-3">
                 <h3>O SI YA TIENES CUENTA</h3>
                 <a class="btn btn-secondary" href="registro.php">Registrarse</a>
-        <br><br>
             </div>
             
         </form>
