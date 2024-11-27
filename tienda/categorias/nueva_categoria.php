@@ -35,18 +35,17 @@
                 $err_categoria = 'La categoria es obligatoria!';
 
             }else {
-                $sql = "SELECT * FROM categorias WHERE categoria = '$categoria'";
+                $sql = "SELECT * FROM categorias WHERE categoria = '$tmp_categoria'";
                 $resultado = $_conexion -> query($sql);
                     
-                if($resultado -> num_rows == 1){
+                if($resultado -> num_rows > 0){
                     $err_categoria = "La categoria $tmp_categoria ya existe";
                 }else{
                     if(strlen($tmp_categoria) < 2 || strlen($tmp_categoria) > 30) {
                         $err_categoria = "La categoria no puede contener mas de 30 caracteres";
                     } 
                     else {
-                        //solo puede tener letras y espacio en blanco
-                        $patron = "/^[A-Za-z áéíóúÁEÍÓÚñÑ]+/";
+                        $patron = "/^[a-zA-ZáéíóúÁEÍÓÚñÑ ]+/";
                         if(!preg_match($patron, $tmp_categoria)){
                             $err_categoria = "La categoria solo puede contener letras o espacios en blanco";
                         }
@@ -79,8 +78,6 @@
         $sql = "SELECT * FROM categorias ORDER BY categoria";
         $resultado = $_conexion -> query($sql);
         
-
-        
         ?>
         <form class="col-6" action="" method="post" enctype="multipart/form-data">
             <div class="mb-3">
@@ -90,7 +87,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Descripcion</label>
-                <input class="form-control" type="textarea" name="descripcion">
+                <input class="form-control" type="textarea" rows="4" cols="10" name="descripcion">
                 <?php if(isset($err_descripcion)) echo "<span class='error'>$err_descripcion</span>" ?>
             </div>
             <div class="mb-3">

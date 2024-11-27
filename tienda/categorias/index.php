@@ -9,6 +9,7 @@
         error_reporting( E_ALL );
         ini_set("display_errors", 1 );  
         require('../util/conexion.php');
+        require '../util/depurar.php';
 
         session_start();
         if(isset($_SESSION["usuario"])){
@@ -25,7 +26,7 @@
         <h1>Las Categorias</h1>
         <?php 
             if($_SERVER["REQUEST_METHOD"] == "POST"){
-                $categoria = $_POST["categoria"];
+                $categoria = depurar($_POST["categoria"]);
                 //borrar la categoria
                 $sql = "DELETE FROM categorias WHERE categoria = '$categoria'";
                 $_conexion -> query($sql);

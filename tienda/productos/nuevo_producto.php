@@ -53,6 +53,10 @@
                     $err_nombre = "El nombre no puede contener mas de 50 caracteres";
                 } 
                 else {
+                    $patron = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9 ]+$/";
+                    if(!preg_match($patron, $tmp_nombre)){
+                        $err_nombre = "El nombre solo puede contener letras, espacio en blanco y numeros";
+                    }
                     //solo puede tener letras espacios en blanco y numeros
                     $nombre = $tmp_nombre;
                 } 
@@ -64,12 +68,15 @@
                 if(!filter_var($tmp_precio, FILTER_VALIDATE_FLOAT)){
                     $err_precio = "El precio debe ser un numero!";
                 }else{
-                    //minimo 0 y maximo bbdd
-                    $patron = "/^[0-9]{1,4}(\.[0-9]{1,2})?$/";
-                    if(!preg_match($patron, $tmp_precio)){
-                        $err_precio = "El precio no debe superar los 9999, ni ser inferior a 0 ni contener mas de 2 decimales";
+                    if($tmp_precio < 0 || $tmp_precio > 9999){
+                        $err_precio = "El precio no puede ni ser negativo ni superar 9999";
                     }else{
-                        $precio = $tmp_precio;
+                        $patron = "/^[0-9]{1,4}(\.[0-9]{1,2})?$/";
+                        if(!preg_match($patron, $tmp_precio)){
+                            $err_precio = "El precio no debe superar los 9999, ni ser inferior a 0 ni contener mas de 2 decimales";
+                        }else{
+                            $precio = $tmp_precio;
+                        }
                     }
                 }
             }

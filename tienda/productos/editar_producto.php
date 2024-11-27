@@ -7,8 +7,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <?php 
         require '../util/conexion.php';
+        require '../util/depurar.php';
+
         error_reporting( E_ALL );
         ini_set( "display_errors", 1);
+
         session_start();
         if(isset($_SESSION["usuario"])){
             echo "<h2>Bienvenid@ ". $_SESSION["usuario"] ."</h2>";
@@ -45,11 +48,11 @@
 
 
         if($_SERVER["REQUEST_METHOD"] == "POST"){
-            $nombre = $_POST["nombre"];
-            $precio = $_POST["precio"];
-            $categoria = $_POST["categoria"];
-            $stock = $_POST["stock"];
-            $descripcion = $_POST["descripcion"];
+            $nombre = depurar($_POST["nombre"]);
+            $precio = depurar($_POST["precio"]);
+            $categoria = depurar($_POST["categoria"]);
+            $stock = depurar($_POST["stock"]);
+            $descripcion = depurar($_POST["descripcion"]);
 
             $sql = "UPDATE productos SET
                 nombre = '$nombre',
