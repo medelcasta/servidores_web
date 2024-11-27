@@ -54,9 +54,10 @@
                         $patron = "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$";
                         if(!preg_match($patron, $tmp_contrasena)){
                             $err_contrasena = "La contraseña solo puede contener mayusculas, minusculas, algun numero y caractreres especiales";
+                        }else{
+                            $contrasena = $tmp_contrasena;
+                            $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);
                         }
-                        $contrasena = $tmp_contrasena;
-                        $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);
                     }
                 }
                 

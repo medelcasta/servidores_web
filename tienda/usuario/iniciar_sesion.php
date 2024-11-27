@@ -93,6 +93,7 @@
             <div class="mb-3">
                 <input class="btn btn-primary" type="submit" value="Iniciar Sesion">
                 <a class="btn btn-secondary" href="../index.php">Volver a Inicio</a>
+                <a class="btn btn-secondary" href="cambiar_credenciales.php">Cambiar Contraseña</a>
             </div>
             <div class="mb-3">
                 <h3>O SI YA TIENES CUENTA</h3>
