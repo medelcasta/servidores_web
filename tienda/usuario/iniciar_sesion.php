@@ -76,7 +76,17 @@
                         }
                     }
                 }
+                
+
+                    
                
+            }
+            $sql = "SELECT * FROM usuarios";
+            $resultado = $_conexion -> query($sql); 
+
+            while($fila = $resultado -> fetch_assoc()){ //trata el resultado como un array asociativo
+                $fila["usuario"];
+                $fila["contrasena"];
             }
         ?>
         <form class="col-6" action="" method="post" enctype="multipart/form-data">
@@ -98,7 +108,7 @@
             </div>
             <div class="mb-3">
                 <h3>has olvidado tu contraseña</h3>
-                <a class="btn btn-secondary" href="cambiar_credenciales.php">Cambiar Contraseña</a>
+                <a class="btn btn-secondary" href="cambiar_credenciales.php?usuario=<?php echo $fila["usuario"]?>">Cambiar Contraseña</a>
             </div>
             <div class="mb-3">
                 <h3>O SI YA TIENES CUENTA</h3>

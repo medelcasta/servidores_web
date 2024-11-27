@@ -48,7 +48,7 @@
                 }
             }
 
-            if(isset($descripcion)){
+            if(isset($contrasena)){
                 $sql = "UPDATE usuarios SET
                 contrasena = '$contrasena_cifrada'
                 WHERE usuario = '$usuario'
