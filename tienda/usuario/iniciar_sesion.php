@@ -40,7 +40,8 @@
                     $err_contrasena = "La contraseña es obligatoria";
                 }else{
                     if(strlen($tmp_contrasena) < 8 || strlen($tmp_contrasena) > 15){
-                        $err_contrasena = "La contraseña no puede contener mas de 255 caracteres";
+                        echo $tmp_contrasena;
+                        $err_contrasena = "La contraseña no puede contener mas de 15 caracteres";
                     }else{
                         //letras en mayus y minus, algun numero y puede tener caracteres especiales (consultar expresion enregexr)
                         $contrasena = $tmp_contrasena;
@@ -96,8 +97,12 @@
                 <a class="btn btn-secondary" href="cambiar_credenciales.php">Cambiar Contraseña</a>
             </div>
             <div class="mb-3">
+                <h3>has olvidado tu contraseña</h3>
+                <a class="btn btn-secondary" href="cambiar_credenciales.php">Cambiar Contraseña</a>
+            </div>
+            <div class="mb-3">
                 <h3>O SI YA TIENES CUENTA</h3>
-                <a class="btn btn-secondary" href="registro.php">Registrarse</a>
+                <a class="btn btn-secondary" href="registro.php">Registro</a>
             </div>
             
         </form>

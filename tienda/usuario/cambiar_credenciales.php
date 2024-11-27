@@ -50,30 +50,31 @@
 
             if(isset($descripcion)){
                 $sql = "UPDATE usuarios SET
-                usuario = '$usuario',
-                contrasena = '$contrasena'
+                contrasena = '$contrasena_cifrada'
                 WHERE usuario = '$usuario'
                 ";
 
                 $_conexion -> query($sql);
             }
+
+            echo "$contrasena_cifrada";
             
         }
         ?>
         <form class="col-6" action="" method="post" enctype="multipart/form-data">
             <div class="mb-3">
-                <label class="form-label">Categoria</label>
-                <input type="hidden" class="form-control" type="text" name="categoria" value="<?php echo $categoria ?>">
-                <input type="disabled" class="form-control" type="text" name="categoria" value="<?php echo $categoria ?>">
+                <label class="form-label">Usuario</label>
+                <input type="hidden" class="form-control" type="text" name="usuario" value="<?php echo $usuario ?>">
+                <input type="disabled" class="form-control" type="text" name="usuario" value="<?php echo $usuario ?>">
             </div>
             <div class="mb-3">
-                <label class="form-label">Descripcion</label>
-                <input class="form-control" type="text" name="descripcion" value="<?php echo $descripcion?>">
+                <label class="form-label">Contraseña</label>
+                <input class="form-control" type="text" name="contrasena" value="<?php echo $contrasena?>">
             </div>
             <div class="mb-3">
                 <input type="hidden" name="categoria" value="<?php echo $categoria ?>" >
                 <input class="btn btn-primary" type="submit" value="Confirmar">
-                <a class="btn btn-secondary" href="index.php">Volver</a>
+                <a class="btn btn-secondary" href="iniciar_sesion.php">Volver</a>
             </div>
         </form>
     </div>
