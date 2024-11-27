@@ -71,12 +71,16 @@
             <a class="btn btn-warning" href="./usuario/cerrar_sesion.php">Cerrar Sesion</a>
             <a class="btn btn-secondary" href="./categorias/index.php">Ir a Categorias</a>
             <a class="btn btn-secondary" href="./productos/index.php">Ir a Productos</a>
+            <br>
+            <h3>has olvidado tu contraseña</h3>
+            <a class="btn btn-secondary" href="./usuario/cambiar_credenciales.php">Cambiar Contraseña</a>
         <?php }else{?>
             <a class="btn btn-warning" href="./usuario/iniciar_sesion.php">Iniciar Sesion</a>
         <?php }
         ?>
         
         <br><br>
+        
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

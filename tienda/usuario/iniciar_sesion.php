@@ -31,8 +31,12 @@
                     if(strlen($tmp_usuario) < 3 || strlen($tmp_usuario) > 15){
                         $err_usuario = "El usuario no puede contener mas de 15 caracteres";
                     }else{
-                        //y solo puede tener letras y numeros
-                        $usuario = $tmp_usuario;
+                        $patron = "/^[a-zA-Z0-9]+$/";
+                        if(!preg_match($patron, $tmp_usuario)){
+                            $err_usuario = "El usuario solo puedo contener numeros y letras";
+                        }else{
+                            $usuario = $tmp_usuario;
+                        }                    
                     }
                 }
 
@@ -94,11 +98,6 @@
             <div class="mb-3">
                 <input class="btn btn-primary" type="submit" value="Iniciar Sesion">
                 <a class="btn btn-secondary" href="../index.php">Volver a Inicio</a>
-                <a class="btn btn-secondary" href="cambiar_credenciales.php">Cambiar Contraseña</a>
-            </div>
-            <div class="mb-3">
-                <h3>has olvidado tu contraseña</h3>
-                <a class="btn btn-secondary" href="cambiar_credenciales.php">Cambiar Contraseña</a>
             </div>
             <div class="mb-3">
                 <h3>O SI YA TIENES CUENTA</h3>

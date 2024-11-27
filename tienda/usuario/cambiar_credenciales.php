@@ -8,7 +8,13 @@
     <?php 
         require '../util/conexion.php';
         require '../util/depurar.php';
-        
+        session_start();
+        if(isset($_SESSION["usuario"])){
+            echo "<h2>Bienvenid@ ". $_SESSION["usuario"] ."</h2>";
+        }else{
+            header("location: usuario/iniciar_sesion.php");
+            exit;
+        }
     ?>
 </head>
 <body>
@@ -16,7 +22,6 @@
         <h1>Cambiar contraseña</h1>
         <?php
 
-        
 
 
         if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -37,12 +42,15 @@
             if($tmp_contrasena == ''){
                 $err_contrasena = "La contraseña es obligatoria";
             }else{
-                if(strlen($tmp_contrasena) < 8 || strlen($tmp_contrasena) > 15){
-                    echo $tmp_contrasena;
-                    $err_contrasena = "La contraseña no puede contener mas de 15 caracteres";
+                if(strlen($tmp_contrasena) < 8 || strlen($tmp_contrasena) > 255){
+                    $err_contrasena = "La contraseña no puede contener mas de 255 caracteres";
                 }else{
-                    //letras en mayus y minus, algun numero y puede tener caracteres especiales (consultar expresion enregexr)
-                    $contrasena = $tmp_contrasena;
+                    $patron = "/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/";
+                    if(!preg_match($patron, $tmp_contrasena)){
+                        $err_contrasena = "La contraseña debe contener mayusculas, minusculas, algun numero y caractreres especiales";
+                    }else{
+                        $contrasena = $tmp_contrasena;
+                    }
                 }
             }
 

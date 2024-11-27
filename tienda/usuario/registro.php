@@ -31,7 +31,7 @@
                 if($tmp_usuario == ''){
                     $err_usuario = "El usuario es obligorio";
                 }else{
-                    $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
+                    $sql = "SELECT * FROM usuarios WHERE usuario = '$tmp_usuario'";
                     $resultado = $_conexion -> query($sql);
                     
                     if($resultado -> num_rows == 1){
@@ -51,7 +51,7 @@
                     if(strlen($tmp_contrasena) < 8 || strlen($tmp_contrasena) > 255){
                         $err_contrasena = "La contraseña no puede contener mas de 255 caracteres";
                     }else{
-                        $patron = "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$";
+                        $patron = "/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/";
                         if(!preg_match($patron, $tmp_contrasena)){
                             $err_contrasena = "La contraseña solo puede contener mayusculas, minusculas, algun numero y caractreres especiales";
                         }else{
