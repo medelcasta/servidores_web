@@ -16,50 +16,55 @@
         <h1>Cambiar contraseña</h1>
         <?php
 
-        $usuario = $_GET["usuario"];
-        $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
-        $resultado = $_conexion -> query($sql);
-        while($fila = $resultado -> fetch_assoc()) {
-            $usuario = $fila["usuario"];
-            $contrasena = $fila["contrasena"];
-        }
-
-        $sql = "SELECT * FROM usuarios ORDER BY usuario";
-        $resultado = $_conexion -> query($sql);
+        
 
 
         if($_SERVER["REQUEST_METHOD"] == "POST"){
-            $usuario = depurar($_POST["usuario"]);
+            $tmp_usuario = depurar($_POST["usuario"]);
             $tmp_contrasena = depurar($_POST["contrasena"]);
 
-            if($tmp_contrasena == ''){
-                $err_contrasena= 'La contraseña es obligatoria!';
-            }else {
-                if(strlen($tmp_contrasena) < 8 || strlen($tmp_contrasena) > 255){
-                    $err_contrasena = "La contraseña no puede contener mas de 255 caracteres";
+            if($tmp_usuario == ''){
+                $err_usuario = "El usuario es obligorio";
+            }else{
+                if(strlen($tmp_usuario) < 3 || strlen($tmp_usuario) > 15){
+                    $err_usuario = "El usuario no puede contener mas de 15 caracteres";
                 }else{
-                    $patron = "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$";
-                    if(!preg_match($patron, $tmp_contrasena)){
-                        $err_contrasena = "La contraseña solo puede contener mayusculas, minusculas, algun numero y caractreres especiales";
-                    }else{
-                        $contrasena = $tmp_contrasena;
-                        $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);
-                    }
+                    //y solo puede tener letras y numeros
+                    $usuario = $tmp_usuario;
                 }
             }
 
-            if(isset($contrasena)){
-                $sql = "UPDATE usuarios SET
-                contrasena = '$contrasena_cifrada'
-                WHERE usuario = '$usuario'
-                ";
-
-                $_conexion -> query($sql);
+            if($tmp_contrasena == ''){
+                $err_contrasena = "La contraseña es obligatoria";
+            }else{
+                if(strlen($tmp_contrasena) < 8 || strlen($tmp_contrasena) > 15){
+                    echo $tmp_contrasena;
+                    $err_contrasena = "La contraseña no puede contener mas de 15 caracteres";
+                }else{
+                    //letras en mayus y minus, algun numero y puede tener caracteres especiales (consultar expresion enregexr)
+                    $contrasena = $tmp_contrasena;
+                }
             }
 
-            echo "$contrasena_cifrada";
-            
-        }
+            if(isset($usuario) && isset($contrasena)){
+                $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
+                $resultado = $_conexion -> query($sql);
+                //var_dump($resultado);
+
+                if($resultado -> num_rows == 0){
+                    $err_usuario = "El usuario no existe";
+                }else{
+                    $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);
+                    $sql = "UPDATE usuarios SET
+                    contrasena = '$contrasena_cifrada'
+                    WHERE usuario = '$usuario'
+                    ";
+
+                    $_conexion -> query($sql);
+                }
+            }
+        }         
+    
         ?>
         <form class="col-6" action="" method="post" enctype="multipart/form-data">
             <div class="mb-3">
