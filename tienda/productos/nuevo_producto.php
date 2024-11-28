@@ -35,16 +35,10 @@
             else $tmp_categoria = "";
             $tmp_stock = depurar($_POST["stock"]);
             $tmp_descripcion = depurar($_POST["descripcion"]);
-            /**
-             * $_FILES -> que es un array BIDIMENSIONAL
-             */
-            //var_dump($_FILES["imagen"]);
         
             $nombre_imagen = $_FILES["imagen"]["name"];
             $ubicacion_temporal = $_FILES["imagen"]["tmp_name"];
-            $ubicacion_final = "../imagenes/$nombre_imagen";
-
-            
+            $ubicacion_final = "../imagenes/$nombre_imagen";    
 
             if($tmp_nombre == ''){
                 $err_nombre = 'El nombre es obligatorio!';
@@ -56,9 +50,9 @@
                     $patron = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9 ]+$/";
                     if(!preg_match($patron, $tmp_nombre)){
                         $err_nombre = "El nombre solo puede contener letras, espacio en blanco y numeros";
-                    }
-                    //solo puede tener letras espacios en blanco y numeros
-                    $nombre = $tmp_nombre;
+                    }else{
+                        $nombre = $tmp_nombre;
+                    } 
                 } 
             }
 
@@ -98,15 +92,15 @@
                     $categoria = $tmp_categoria;
                 }
             }
+
             if($tmp_stock == ''){
                 $stock = 0;
             }else{
                 if(!filter_var($tmp_precio, FILTER_VALIDATE_INT)){
                     $err_stock = "El stock debe ser un numero entero (sin decimales)!";
                 }else{
-                    //maximo lo que aguante la bbdd
-                    if($tmp_stock > 1000) {
-                        $err_stock = "El stock no puede ser superior a 1000";
+                    if($tmp_stock > 2147483647) {
+                        $err_stock = "El stock no puede ser superior a 2147483647";
                     } 
                     else {
                         $stock = $tmp_stock;
@@ -114,7 +108,6 @@
                 }
             }
 
-            //no hace falta, si alguien quiere podeis buscaros la vida y puntuara favorablemente
             if($nombre_imagen == ''){
                 $err_imagen = 'El imagen es obligatoria!';
             }else {
@@ -150,7 +143,7 @@
 
         $sql = "SELECT * FROM categorias ORDER BY categoria";
         $resultado = $_conexion -> query($sql);
-        $categorias_array = []; // aqui añadimos los estudios que encontremos en la base de datos y luego mostraremos este con el select
+        $categorias_array = [];
 
         while($fila = $resultado -> fetch_assoc()){
             array_push($categorias_array, $fila["categoria"]);

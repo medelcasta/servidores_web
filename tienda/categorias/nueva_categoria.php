@@ -45,7 +45,7 @@
                         $err_categoria = "La categoria no puede contener mas de 30 caracteres";
                     } 
                     else {
-                        $patron = "/^[a-zA-ZáéíóúÁEÍÓÚñÑ ]+/";
+                        $patron = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$/";
                         if(!preg_match($patron, $tmp_categoria)){
                             $err_categoria = "La categoria solo puede contener letras o espacios en blanco";
                         }

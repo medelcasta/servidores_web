@@ -48,22 +48,119 @@
 
 
         if($_SERVER["REQUEST_METHOD"] == "POST"){
-            $nombre = depurar($_POST["nombre"]);
-            $precio = depurar($_POST["precio"]);
-            $categoria = depurar($_POST["categoria"]);
-            $stock = depurar($_POST["stock"]);
-            $descripcion = depurar($_POST["descripcion"]);
+            $tmp_nombre = depurar($_POST["nombre"]);
+            $tmp_precio = depurar($_POST["precio"]);
+            if(isset($_POST["categoria"])) $tmp_categoria = depurar($_POST["categoria"]);
+            else $tmp_categoria = "";
+            $tmp_stock = depurar($_POST["stock"]);
+            $tmp_descripcion = depurar($_POST["descripcion"]);
+        
+            $nombre_imagen = $_FILES["imagen"]["name"];
+            $ubicacion_temporal = $_FILES["imagen"]["tmp_name"];
+            $ubicacion_final = "../imagenes/$nombre_imagen";    
 
-            $sql = "UPDATE productos SET
-                nombre = '$nombre',
-                precio = $precio,
-                categoria = '$categoria',
-                stock = $stock,
-                descripcion = '$descripcion'
-                WHERE id_producto = $id_producto
-            ";
+            if($tmp_nombre == ''){
+                $err_nombre = 'El nombre es obligatorio!';
+            }else {
+                if(strlen($tmp_nombre) < 2 ||strlen($tmp_nombre) > 50) {
+                    $err_nombre = "El nombre no puede contener mas de 50 caracteres";
+                } 
+                else {
+                    $patron = "/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9 ]+$/";
+                    if(!preg_match($patron, $tmp_nombre)){
+                        $err_nombre = "El nombre solo puede contener letras, espacio en blanco y numeros";
+                    }else{
+                        $nombre = $tmp_nombre;
+                    } 
+                } 
+            }
 
-            $_conexion -> query($sql);
+            if($tmp_precio == ''){
+                $err_precio = "El precio es obligatorio!";
+            }else{
+                if(!filter_var($tmp_precio, FILTER_VALIDATE_FLOAT)){
+                    $err_precio = "El precio debe ser un numero!";
+                }else{
+                    if($tmp_precio < 0 || $tmp_precio > 9999){
+                        $err_precio = "El precio no puede ni ser negativo ni superar 9999";
+                    }else{
+                        $patron = "/^[0-9]{1,4}(\.[0-9]{1,2})?$/";
+                        if(!preg_match($patron, $tmp_precio)){
+                            $err_precio = "El precio no debe superar los 9999, ni ser inferior a 0 ni contener mas de 2 decimales";
+                        }else{
+                            $precio = $tmp_precio;
+                        }
+                    }
+                }
+            }
+            
+            $sql = "SELECT * FROM categorias ORDER BY categoria";
+            $resultado = $_conexion -> query($sql);
+            $categorias_array = []; // aqui añadimos los estudios que encontremos en la base de datos y luego mostraremos este con el select
+
+            while($fila = $resultado -> fetch_assoc()){
+                array_push($categorias_array, $fila["categoria"]);
+            }
+
+            if($tmp_categoria == ''){
+                $err_categoria = 'La categoria es obligatoria!';
+            }else {
+                if(!in_array($tmp_categoria, $categorias_array)){
+                    $err_categoria = "La categoria no es correcta";
+                }else{
+                    $categoria = $tmp_categoria;
+                }
+            }
+
+            if($tmp_stock == ''){
+                $stock = 0;
+            }else{
+                if(!filter_var($tmp_precio, FILTER_VALIDATE_INT)){
+                    $err_stock = "El stock debe ser un numero entero (sin decimales)!";
+                }else{
+                    if($tmp_stock > 2147483647) {
+                        $err_stock = "El stock no puede ser superior a 2147483647";
+                    } 
+                    else {
+                        $stock = $tmp_stock;
+                    } 
+                }
+            }
+
+            if($nombre_imagen == ''){
+                $err_imagen = 'El imagen es obligatoria!';
+            }else {
+                if(strlen($nombre_imagen) > 60) { 
+                    $err_imagen= "La imagen no puede contener mas de 60 caracteres";
+                } 
+                else {
+                    move_uploaded_file($ubicacion_temporal, $ubicacion_final);
+                    $imagen = $nombre_imagen;
+                } 
+            }
+            if($tmp_descripcion == ''){
+                $err_descripcion = 'La descripcion es obligatoria!';
+            }else {
+                if(strlen($tmp_descripcion) > 255) {
+                    $err_descripcion = "La descripcion no puede contener mas de 255 caracteres";
+                } 
+                else {
+                    $descripcion = $tmp_descripcion;
+                } 
+            }
+
+           if(isset($nombre) && isset($precio) && isset($stock) && isset($descripcion) && isset($imagen) && isset($categoria)){
+                $sql = "UPDATE productos SET
+                    nombre = '$nombre',
+                    precio = $precio,
+                    categoria = '$categoria',
+                    stock = $stock,
+                    descripcion = '$descripcion'
+                    WHERE id_producto = $id_producto
+                ";
+
+                $_conexion -> query($sql);
+           }
         }
         ?>
         <form class="col-6" action="" method="post" enctype="multipart/form-data">
