@@ -29,7 +29,7 @@
                     $err_usuario = "El usuario es obligorio";
                 }else{
                     if(strlen($tmp_usuario) < 3 || strlen($tmp_usuario) > 15){
-                        $err_usuario = "El usuario no puede contener mas de 15 caracteres";
+                        $err_usuario = "El usuario no puede contener mas de 15 caracteres ni menos de 3";
                     }else{
                         $patron = "/^[a-zA-Z0-9]+$/";
                         if(!preg_match($patron, $tmp_usuario)){
@@ -44,36 +44,30 @@
                     $err_contrasena = "La contraseña es obligatoria";
                 }else{
                     if(strlen($tmp_contrasena) < 8 || strlen($tmp_contrasena) > 15){
-                        echo $tmp_contrasena;
                         $err_contrasena = "La contraseña no puede contener mas de 15 caracteres";
                     }else{
-                        //letras en mayus y minus, algun numero y puede tener caracteres especiales (consultar expresion enregexr)
-                        $contrasena = $tmp_contrasena;
+                        $patron = "/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/";
+                        if(!preg_match($patron, $tmp_contrasena)){
+                            $err_contrasena = "La contraseña debe contener mayusculas, minusculas, algun numero o caractreres especiales";
+                        }else{
+                            $contrasena = $tmp_contrasena;
+                        }
                     }
                 }
 
                 if(isset($usuario) && isset($contrasena)){
                     $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
                     $resultado = $_conexion -> query($sql);
-                    //var_dump($resultado);
 
                     if($resultado -> num_rows == 0){
-                        $err_usuario = "El usuario no existe";
+                        $err_usuario = "El usuario $usuario no existe";
                     }else{
                         $datos_usuario = $resultado -> fetch_assoc();
-                        /**
-                         * Podemos acceder: 
-                         * 
-                         * $datos_usuario["usuario"];
-                         * $datos_usuario["contrasena"];
-                         */
 
                         $acceso_concedido = password_verify($contrasena, $datos_usuario["contrasena"]); //inversa de password hash
                         if($acceso_concedido){
-                            //todo guay
                             session_start();
                             $_SESSION["usuario"] = $usuario;
-                            //$_COOKIES["loquesea"] = "loquesea";
                             header("location: ../index.php");
                         }else{
                             $err_contrasena = "La contraseña es incorrecta";
@@ -97,11 +91,11 @@
             </div>
             <div class="mb-3">
                 <input class="btn btn-primary" type="submit" value="Iniciar Sesion">
-                <a class="btn btn-secondary" href="../index.php">Volver a Inicio</a>
+                <a class="btn btn-info" href="../index.php">Volver a Inicio</a>
             </div>
             <div class="mb-3">
-                <h3>O SI YA TIENES CUENTA</h3>
-                <a class="btn btn-secondary" href="registro.php">Registro</a>
+                <h3>Si aun no tienes cuenta</h3>
+                <a class="btn btn-success" href="registro.php">Registro</a>
             </div>
             
         </form>
@@ -109,13 +103,3 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
-
-        <!--
-
-                SESIONES: informacion almacenada en el servidor 
-                (aunque se guarda un id de la sesion en las cookies)
-
-                COOKIES: informacion almacenada en el cliente
-
-
-        -->

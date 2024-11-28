@@ -19,12 +19,12 @@
     ?>
 </head>
 <body>
-<div class="container">
+    <div class="container">
         <h1>Pagina Principal</h1>
         <?php 
             if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $id_producto = $_POST["id_producto"];
-                //borrar el producto
+
                 $sql = "DELETE FROM productos WHERE id_producto = $id_producto";
                 $_conexion -> query($sql);
             }
@@ -46,36 +46,33 @@
             </thead>
             <tbody>
                 <?php 
-                    while($fila = $resultado -> fetch_assoc()){ //trata el resultado como un array asociativo
+                    while($fila = $resultado -> fetch_assoc()){ 
                         echo "<tr>";
                         echo "<td>" . $fila["nombre"] ."</td>";
                         echo "<td>" . $fila["precio"] ."</td>";
                         echo "<td>" . $fila["categoria"] ."</td>";
                         echo "<td>" . $fila["stock"] ."</td>";
                 ?>
-                        <td>
-                            <img width="100" height="200" src="./imagenes/<?php echo $fila["imagen"] ?> ">
-                        </td>
-                        <?php
+                <td>
+                    <img width="100" height="200" src="./imagenes/<?php echo $fila["imagen"] ?> ">
+                </td>
+                    <?php
                         echo "<td>" . $fila["descripcion"] ."</td>";
-                        ?>
-                        
-                        <?php
                         echo "</tr>";
                     }
-                ?>
+                    ?>
             </tbody>
         </table>
         <?php
         if(isset($_SESSION["usuario"])){ ?>
-            <a class="btn btn-warning" href="./usuario/cerrar_sesion.php">Cerrar Sesion</a>
+            <a class="btn btn-danger" href="./usuario/cerrar_sesion.php">Cerrar Sesion</a>
             <a class="btn btn-secondary" href="./categorias/index.php">Ir a Categorias</a>
             <a class="btn btn-secondary" href="./productos/index.php">Ir a Productos</a>
             <br>
-            <h3>has olvidado tu contraseña</h3>
-            <a class="btn btn-secondary" href="./usuario/cambiar_credenciales.php">Cambiar Contraseña</a>
+            <h3>Has olvidado tu contraseña</h3>
+            <a class="btn btn-outline-danger" href="./usuario/cambiar_credenciales.php">Cambiar Contraseña</a>
         <?php }else{?>
-            <a class="btn btn-warning" href="./usuario/iniciar_sesion.php">Iniciar Sesion</a>
+            <a class="btn btn-primary" href="./usuario/iniciar_sesion.php">Iniciar Sesion</a>
         <?php }
         ?>
         

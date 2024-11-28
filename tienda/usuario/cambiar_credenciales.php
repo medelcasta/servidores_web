@@ -34,8 +34,12 @@
                 if(strlen($tmp_usuario) < 3 || strlen($tmp_usuario) > 15){
                     $err_usuario = "El usuario no puede contener mas de 15 caracteres";
                 }else{
-                    //y solo puede tener letras y numeros
-                    $usuario = $tmp_usuario;
+                    $patron = "/^[a-zA-Z0-9]+$/";
+                    if(!preg_match($patron, $tmp_usuario)){
+                        $err_usuario = "El usuario solo puedo contener numeros y letras";
+                    }else{
+                        $usuario = $tmp_usuario;
+                    }
                 }
             }
 
@@ -82,7 +86,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Contraseña</label>
-                <input class="form-control" type="text" name="contrasena" value="<?php echo $contrasena?>">
+                <input class="form-control" type="password" name="contrasena" value="<?php echo $contrasena?>">
             </div>
             <div class="mb-3">
                 <input type="hidden" name="categoria" value="<?php echo $categoria ?>" >
