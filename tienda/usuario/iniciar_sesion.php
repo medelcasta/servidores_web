@@ -64,7 +64,7 @@
                     }else{
                         $datos_usuario = $resultado -> fetch_assoc();
 
-                        $acceso_concedido = password_verify($contrasena, $datos_usuario["contrasena"]); //inversa de password hash
+                        $acceso_concedido = password_verify($contrasena, $datos_usuario["contrasena"]);
                         if($acceso_concedido){
                             session_start();
                             $_SESSION["usuario"] = $usuario;

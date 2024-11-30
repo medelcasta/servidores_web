@@ -138,6 +138,7 @@
                     $imagen = $nombre_imagen;
                 } 
             }
+
             if($tmp_descripcion == ''){
                 $err_descripcion = 'La descripcion es obligatoria!';
             }else {
@@ -155,6 +156,7 @@
                     precio = $precio,
                     categoria = '$categoria',
                     stock = $stock,
+                    imagen = $imagen,
                     descripcion = '$descripcion'
                     WHERE id_producto = $id_producto
                 ";

@@ -24,6 +24,25 @@
 <body>
 <div class="container">
         <h1>Las Categorias</h1>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="../index.php">Inicio</a>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="nueva_categoria.php">Nueva Categoria</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../productos/index.php">Ir a Productos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../usuario/cerrar_sesion.php">Cerrar Sesión</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <br>
         <?php 
             if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $categoria = depurar($_POST["categoria"]);
@@ -67,11 +86,6 @@
                 ?>
             </tbody>
         </table>
-        <a class="btn btn-secondary" href="nueva_categoria.php">Crear Nueva Categoria</a>
-        <a class="btn btn-secondary" href="../productos/index.php">Ir a productos</a>
-        <a class="btn btn-secondary" href="../index.php">Volver a Inicio</a>
-        <a class="btn btn-warning" href="../usuario/cerrar_sesion.php">Cerrar Sesion</a>
-        <br><br>
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

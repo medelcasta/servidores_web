@@ -77,7 +77,7 @@
             
             $sql = "SELECT * FROM categorias ORDER BY categoria";
             $resultado = $_conexion -> query($sql);
-            $categorias_array = []; // aqui añadimos los estudios que encontremos en la base de datos y luego mostraremos este con el select
+            $categorias_array = [];
 
             while($fila = $resultado -> fetch_assoc()){
                 array_push($categorias_array, $fila["categoria"]);
@@ -172,7 +172,7 @@
                         </option>
                     <?php } ?>
                 </select>
-
+                <?php if(isset($err_categoria)) echo "<span class='error'>$err_categoria</span>" ?>
             </div>
             <div class="mb-3">
                 <label class="form-label">Stock</label>

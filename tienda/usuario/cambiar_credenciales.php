@@ -91,7 +91,8 @@
             <div class="mb-3">
                 <input type="hidden" name="categoria" value="<?php echo $categoria ?>" >
                 <input class="btn btn-primary" type="submit" value="Confirmar">
-                <a class="btn btn-secondary" href="iniciar_sesion.php">Volver</a>
+                <a class="btn btn-secondary" href="iniciar_sesion.php">Iniciar Sesion</a>
+                <a class="btn btn-secondary" href="../index.php">Volver</a>
             </div>
         </form>
     </div>

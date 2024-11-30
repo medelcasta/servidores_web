@@ -21,6 +21,32 @@
 <body>
     <div class="container">
         <h1>Pagina Principal</h1>
+        <br>
+        <?php
+        if(isset($_SESSION["usuario"])){ ?>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">Aurora</a>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="./categorias/index.php">Ir a Categorias</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="./productos/index.php">Ir a Productos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="./usuario/cerrar_sesion.php">Cerrar Sesión</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="./usuario/cambiar_credenciales.php">Cambiar Contraseña</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        <?php }?>
+        <br>
         <?php 
             if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $id_producto = $_POST["id_producto"];
@@ -64,19 +90,9 @@
             </tbody>
         </table>
         <?php
-        if(isset($_SESSION["usuario"])){ ?>
-            <a class="btn btn-danger" href="./usuario/cerrar_sesion.php">Cerrar Sesion</a>
-            <a class="btn btn-secondary" href="./categorias/index.php">Ir a Categorias</a>
-            <a class="btn btn-secondary" href="./productos/index.php">Ir a Productos</a>
-            <br>
-            <h3>Has olvidado tu contraseña</h3>
-            <a class="btn btn-outline-danger" href="./usuario/cambiar_credenciales.php">Cambiar Contraseña</a>
-        <?php }else{?>
+        if(!isset($_SESSION["usuario"])){ ?>
             <a class="btn btn-primary" href="./usuario/iniciar_sesion.php">Iniciar Sesion</a>
-        <?php }
-        ?>
-        
-        <br><br>
+        <?php }?>
         
     </div>
     

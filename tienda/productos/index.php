@@ -21,6 +21,25 @@
 <body>
 <div class="container">
         <h1>Los Productos</h1>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="../index.php">Inicio</a>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="nuevo_producto.php">Nuevo Producto</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../categorias/index.php">Ir a Categorias</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../usuario/cerrar_sesion.php">Cerrar Sesión</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <br>
         <?php 
             if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $id_producto = $_POST["id_producto"];
@@ -76,11 +95,6 @@
                 ?>
             </tbody>
         </table>
-        <a class="btn btn-secondary" href="nuevo_producto.php">Crear Nuevo Producto</a>
-        <a class="btn btn-warning" href="../usuario/cerrar_sesion.php">Cerrar Sesion</a>
-        <a class="btn btn-secondary" href="../index.php">Volver a Inicio</a>
-        <a class="btn btn-secondary" href="../categorias/index.php">Ir a categorias</a>
-        <br><br>
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
