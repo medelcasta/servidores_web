@@ -150,13 +150,12 @@
                 } 
             }
 
-           if(isset($nombre) && isset($precio) && isset($stock) && isset($descripcion) && isset($imagen) && isset($categoria)){
+           if(isset($nombre) && isset($precio)  && isset($categoria) && isset($stock) && isset($imagen) && isset($descripcion)){
                 $sql = "UPDATE productos SET
                     nombre = '$nombre',
                     precio = $precio,
                     categoria = '$categoria',
                     stock = $stock,
-                    imagen = $imagen,
                     descripcion = '$descripcion'
                     WHERE id_producto = $id_producto
                 ";
