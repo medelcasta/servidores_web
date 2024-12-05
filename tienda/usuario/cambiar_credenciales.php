@@ -21,8 +21,12 @@
 <div class="container">
         <h1>Cambiar contraseña</h1>
         <?php
-
-
+        $usuario = $_GET["usuario"];
+        $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
+        $resultado = $_conexion -> query($sql);
+        while($fila = $resultado -> fetch_assoc()) {
+            $usuario = $fila["usuario"];
+        }
 
         if($_SERVER["REQUEST_METHOD"] == "POST"){
             $tmp_usuario = depurar($_POST["usuario"]);
@@ -82,7 +86,7 @@
             <div class="mb-3">
                 <label class="form-label">Usuario</label>
                 <input type="hidden" class="form-control" type="text" name="usuario" value="<?php echo $usuario ?>">
-                <input type="disabled" class="form-control" type="text" name="usuario" value="<?php echo $usuario ?>">
+                <input type="disabled" class="form-control" type="text" name="usuario" value="<?php echo $_SESSION["usuario"] ?>">
             </div>
             <div class="mb-3">
                 <label class="form-label">Contraseña</label>

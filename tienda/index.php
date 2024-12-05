@@ -26,7 +26,6 @@
         if(isset($_SESSION["usuario"])){ ?>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#">Aurora</a>
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav">
                             <li class="nav-item">
@@ -45,7 +44,10 @@
                     </div>
                 </div>
             </nav>
-        <?php }?>
+        <?php } else { ?>
+            <a class="btn btn-primary" href="./usuario/iniciar_sesion.php">Iniciar Sesion</a>
+        <?php } ?>
+        <br>
         <br>
         <?php 
             if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -89,10 +91,6 @@
                     ?>
             </tbody>
         </table>
-        <?php
-        if(!isset($_SESSION["usuario"])){ ?>
-            <a class="btn btn-primary" href="./usuario/iniciar_sesion.php">Iniciar Sesion</a>
-        <?php }?>
         
     </div>
     

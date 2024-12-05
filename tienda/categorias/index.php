@@ -46,14 +46,22 @@
         <?php 
             if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $categoria = depurar($_POST["categoria"]);
-                //borrar la categoria
-                $sql = "DELETE FROM categorias WHERE categoria = '$categoria'";
-                $_conexion -> query($sql);
+                $sql = "SELECT * FROM productos WHERE categoria = '$categoria'";
+                $resultado = $_conexion -> query($sql);
+
+                if($resultado -> num_rows >= 1){
+                    $err_delete = "Esta categoria tiene asociada un producto, para poder eliminarla elimina antes los productos";
+                }else{
+                    $sql = "DELETE FROM categorias WHERE categoria = '$categoria'";
+                    $_conexion -> query($sql);
+                }
             }
             $sql = "SELECT * FROM categorias";
             $resultado = $_conexion -> query($sql); 
 
         ?>
+
+        
 
         <table class="table table-striped table-hover">
             <thead class="table-dark">
@@ -86,6 +94,7 @@
                 ?>
             </tbody>
         </table>
+        <?php if(isset($err_delete)) "<span class='error'> $err_delete </span>"?>
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
