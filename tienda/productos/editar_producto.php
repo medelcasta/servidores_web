@@ -112,7 +112,7 @@
                 }
             }
 
-            if($tmp_stock == ''){
+            if($tmp_stock == '' || $tmp_stock == 0){
                 $stock = 0;
             }else{
                 if(!filter_var($tmp_precio, FILTER_VALIDATE_INT)){
