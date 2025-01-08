@@ -75,10 +75,23 @@
                 }
             }
 
-            
-            
+
+            /*
             $sql = "SELECT * FROM categorias ORDER BY categoria";
             $resultado = $_conexion -> query($sql);
+            */
+            // 1. Preparacion --> le vamos a quitar todas las variables
+            $sql = $_conexion -> prepare("SELECT * FROM categorias ORDER BY ?");
+
+            // 2. Enlazado 
+            $sql -> bind_param("s", $categoria); 
+
+            // 3. Ejecución
+            $sql -> execute();
+
+            // 4. Obtener/ Retrieve (para select que tenga algún parametro)
+            $resultado = $sql -> get_result();
+
             $categorias_array = [];
 
             while($fila = $resultado -> fetch_assoc()){
@@ -135,16 +148,48 @@
             }
 
            if(isset($nombre) && isset($precio) && isset($stock) && isset($descripcion) && isset($imagen) && isset($categoria)){
+                /*
                 $sql = "INSERT INTO productos (nombre, precio, categoria, stock, imagen, descripcion) 
                 VALUES ('$nombre', $precio, '$categoria', $stock, '$imagen', '$descripcion')";
 
                 $_conexion -> query($sql);
+                */
+                // 1. Preparacion --> le vamos a quitar todas las variables
+                $sql = $_conexion -> prepare("INSERT INTO productos (nombre, precio, categoria, stock, imagen, descripcion) 
+                VALUES (?,?,?,?,?,?)");
+
+                // 2. Enlazado 
+                $sql -> bind_param("sisiss", 
+                    $nombre, 
+                    $precio,
+                    $categoria,
+                    $stock,
+                    $imagen,
+                    $descripcion 
+                ); //se pone s si es string e i si es int (si hubiera decimales se pone d)
+
+                // 3. Ejecución
+                $sql -> execute();
             }
             
         }
 
+        /*
         $sql = "SELECT * FROM categorias ORDER BY categoria";
         $resultado = $_conexion -> query($sql);
+        */
+        // 1. Preparacion --> le vamos a quitar todas las variables
+        $sql = $_conexion -> prepare("SELECT * FROM categorias ORDER BY ?");
+
+        // 2. Enlazado 
+        $sql -> bind_param("s", $categoria); 
+
+        // 3. Ejecución
+        $sql -> execute();
+
+        // 4. Obtener/ Retrieve (para select que tenga algún parametro)
+        $resultado = $sql -> get_result();
+        
         $categorias_array = [];
 
         while($fila = $resultado -> fetch_assoc()){
