@@ -74,6 +74,8 @@
                     }
                 }
             }
+
+            
             
             $sql = "SELECT * FROM categorias ORDER BY categoria";
             $resultado = $_conexion -> query($sql);

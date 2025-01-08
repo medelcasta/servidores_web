@@ -26,15 +26,42 @@
         <?php
 
         $categoria = $_GET["categoria"];
+        /*
         $sql = "SELECT * FROM categorias WHERE categoria = '$categoria'";
         $resultado = $_conexion -> query($sql);
+        */
+         // 1. Preparacion --> le vamos a quitar todas las variables
+         $sql = $_conexion -> prepare("SELECT * FROM categorias WHERE categoria = ?");
+
+         // 2. Enlazado 
+         $sql -> bind_param("s", $categoria); 
+ 
+         // 3. Ejecución
+         $sql -> execute();
+ 
+         // 4. Obtener/ Retrieve (para select que tenga algún parametro)
+         $resultado = $sql -> get_result();
+        
         while($fila = $resultado -> fetch_assoc()) {
             $categoria = $fila["categoria"];
             $descripcion = $fila["descripcion"];
         }
 
+        /*
         $sql = "SELECT * FROM categorias ORDER BY categoria";
         $resultado = $_conexion -> query($sql);
+        */
+        // 1. Preparacion --> le vamos a quitar todas las variables
+        $sql = $_conexion -> prepare("SELECT * FROM categorias ORDER BY ?");
+
+        // 2. Enlazado 
+        $sql -> bind_param("s", $categoria); 
+
+        // 3. Ejecución
+        $sql -> execute();
+
+        // 4. Obtener/ Retrieve (para select que tenga algún parametro)
+        $resultado = $sql -> get_result();
 
 
         if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -53,6 +80,7 @@
             }
 
             if(isset($descripcion)){
+                /*
                 $sql = "UPDATE categorias SET
                 categoria = '$categoria',
                 descripcion = '$descripcion'
@@ -60,6 +88,23 @@
                 ";
 
                 $_conexion -> query($sql);
+                */
+                 // 1. Preparacion --> le vamos a quitar todas las variables
+                    $sql = $_conexion -> prepare("UPDATE categorias SET
+                    categoria = ?,
+                    descripcion = ?
+                    WHERE categoria = ? 
+                    ");
+
+                // 2. Enlazado 
+                $sql -> bind_param("ss",
+                    $categoria,
+                    $descripcion,
+                ); //se pone s si es string e i si es int (si hubiera decimales se pone d)
+
+                // 3. Ejecución
+                $sql -> execute();
+                $_conexion -> close();
             }
             
         }

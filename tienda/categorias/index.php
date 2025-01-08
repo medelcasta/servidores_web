@@ -46,19 +46,39 @@
         <?php 
             if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $categoria = depurar($_POST["categoria"]);
+                /*
                 $sql = "SELECT * FROM productos WHERE categoria = '$categoria'";
                 $resultado = $_conexion -> query($sql);
+                */
+                // 1. Preparacion --> le vamos a quitar todas las variables
+                $sql = $_conexion -> prepare("SELECT * FROM productos WHERE categoria = ?");
+
+                // 2. Enlazado 
+                $sql -> bind_param("s", $categoria);
+
+                // 3. Ejecución
+                $sql -> execute();
+                
 
                 if($resultado -> num_rows >= 1){
                     $err_delete = "Esta categoria tiene asociada un producto, para poder eliminarla elimina antes los productos";
-                }else{
+                }else{     
+                    /*
                     $sql = "DELETE FROM categorias WHERE categoria = '$categoria'";
-                    $_conexion -> query($sql);
+                    $_conexion -> query($sql);*/
+                    // 1. Preparacion/ Prepare --> le vamos a quitar todas las variables
+                    $sql = $_conexion -> prepare("DELETE FROM categorias WHERE categoria = ?");
+
+                    // 2. Enlazado/ Bind
+                    $sql -> bind_param("s", $categoria);
+                    // 3. Ejecución / Execute
+                    $sql -> execute();   
                 }
             }
+            
             $sql = "SELECT * FROM categorias";
             $resultado = $_conexion -> query($sql); 
-
+            
         ?>
 
         

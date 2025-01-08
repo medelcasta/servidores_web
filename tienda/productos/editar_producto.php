@@ -26,8 +26,21 @@
         <h1>Editar Producto</h1>
         <?php
         $id_producto = $_GET["id_producto"];
+        /*
         $sql = "SELECT * FROM productos WHERE id_producto = $id_producto";
         $resultado = $_conexion -> query($sql);
+        */
+        // 1. Preparacion --> le vamos a quitar todas las variables
+        $sql = $_conexion -> prepare("SELECT * FROM productos WHERE id_producto = ?");
+
+        // 2. Enlazado 
+        $sql -> bind_param("i", $id_producto); 
+
+        // 3. Ejecución
+        $sql -> execute();
+
+        // 4. Obtener/ Retrieve (para select que tenga algún parametro)
+        $resultado = $sql -> get_result();
         
         while($fila = $resultado -> fetch_assoc()) {
             $nombre = $fila["nombre"];
@@ -37,9 +50,21 @@
             $imagen = $fila["imagen"];
             $descripcion = $fila["descripcion"];
         }
+        // 1. Preparacion --> le vamos a quitar todas las variables
+        $sql = $_conexion -> prepare("SELECT * FROM categorias ORDER BY ?");
 
+        // 2. Enlazado 
+        $sql -> bind_param("s", $categoria); 
+
+        // 3. Ejecución
+        $sql -> execute();
+
+        // 4. Obtener/ Retrieve (para select que tenga algún parametro)
+        $resultado = $sql -> get_result();
+        /*
         $sql = "SELECT * FROM categorias ORDER BY categoria";
         $resultado = $_conexion -> query($sql);
+        */
         $categorias_array = [];
 
         while($fila = $resultado -> fetch_assoc()) {
@@ -93,9 +118,22 @@
                     }
                 }
             }
-            
+            /*
             $sql = "SELECT * FROM categorias ORDER BY categoria";
             $resultado = $_conexion -> query($sql);
+            */
+            // 1. Preparacion --> le vamos a quitar todas las variables
+            $sql = $_conexion -> prepare("SELECT * FROM categorias ORDER BY ?");
+
+            // 2. Enlazado 
+            $sql -> bind_param("s", $categoria); 
+
+            // 3. Ejecución
+            $sql -> execute();
+
+            // 4. Obtener/ Retrieve (para select que tenga algún parametro)
+            $resultado = $sql -> get_result();
+
             $categorias_array = []; // aqui añadimos los estudios que encontremos en la base de datos y luego mostraremos este con el select
 
             while($fila = $resultado -> fetch_assoc()){
@@ -151,7 +189,8 @@
             }
 
            if(isset($nombre) && isset($precio)  && isset($categoria) && isset($stock) && isset($imagen) && isset($descripcion)){
-                $sql = "UPDATE productos SET
+               /*
+               $sql = "UPDATE productos SET
                     nombre = '$nombre',
                     precio = $precio,
                     categoria = '$categoria',
@@ -161,6 +200,28 @@
                 ";
 
                 $_conexion -> query($sql);
+                */
+                // 1. Preparacion --> le vamos a quitar todas las variables
+                $sql = $_conexion -> prepare("UPDATE productos SET
+                    nombre = ?,
+                    precio = ?,
+                    categoria = ?,
+                    stock = ?
+                    descripcion = ?
+                    WHERE id_producto = ?");
+
+                // 2. Enlazado 
+                $sql -> bind_param("sisisi", 
+                    $nombre, 
+                    $precio, 
+                    $categoria, 
+                    $stock, 
+                    $descripcion,
+                    $id_producto
+                ); //se pone s si es string e i si es int (si hubiera decimales se pone d)
+
+                // 3. Ejecución
+                $sql -> execute();
            }
         }
         ?>

@@ -25,8 +25,20 @@
         <?php
 
         $id_anime = $_GET["id_anime"];
+        /*
         $sql = "SELECT * FROM animes WHERE id_anime = $id_anime";
         $resultado = $_conexion -> query($sql);
+        */
+        // 1. Preparacion --> le vamos a quitar todas las variables
+        $sql = $_conexion -> prepare("SELECT * FROM animes WHERE id_anime = ? ");
+
+        // 2. Enlazado 
+        $sql -> bind_param("i", 
+            $id_anime
+        ); //se pone s si es string e i si es int (si hubiera decimales se pone d)
+
+        // 3. Ejecución
+        $sql -> execute();
         
         while($fila = $resultado -> fetch_assoc()) {
             $titulo = $fila["titulo"];
@@ -35,9 +47,23 @@
             $num_temporadas = $fila["num_temporadas"];
             $imagen = $fila["imagen"];
         }
-
+        /*
         $sql = "SELECT * FROM estudios ORDER BY nombre_estudio";
         $resultado = $_conexion -> query($sql);
+        */
+
+        // 1. Preparacion --> le vamos a quitar todas las variables
+        $sql = $_conexion -> prepare("SELECT * FROM estudios ORDER BY ?");
+
+        // 2. Enlazado 
+        $sql -> bind_param("s", $nombre_estudio); 
+
+        // 3. Ejecución
+        $sql -> execute();
+
+        // 4. Obtener/ Retrieve (para select que tenga algún parametro)
+        $resultado = $sql -> get_result();
+        
         $estudios = [];
 
         while($fila = $resultado -> fetch_assoc()) {
@@ -50,7 +76,7 @@
             $nombre_estudio = $_POST["nombre_estudio"];
             $anno_estreno = $_POST["anno_estreno"];
             $num_temporadas = $_POST["num_temporadas"]; 
-
+            /*
             $sql = "UPDATE animes SET
                 titulo = '$titulo',
                 nombre_estudio = '$nombre_estudio',
@@ -60,6 +86,28 @@
             ";
 
             $_conexion -> query($sql);
+            */
+
+            // 1. Preparacion --> le vamos a quitar todas las variables
+            $sql = $_conexion -> prepare("UPDATE animes SET
+                titulo = ?,
+                nombre_estudio = ?,
+                anno_estreno = ?,
+                num_temporadas = ?
+                WHERE id_anime = ?");
+
+            // 2. Enlazado 
+            $sql -> bind_param("ssiii",
+                $titulo, 
+                $nombre_estudio,
+                $anno_estreno,
+                $num_temporadas,
+                $id_anime
+            ); //se pone s si es string e i si es int (si hubiera decimales se pone d)
+
+            // 3. Ejecución
+            $sql -> execute();
+            $_conexion -> close();
         }
         ?>
         <form class="col-6" action="" method="post" enctype="multipart/form-data">

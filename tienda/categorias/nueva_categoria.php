@@ -35,8 +35,17 @@
                 $err_categoria = 'La categoria es obligatoria!';
 
             }else {
+                /*
                 $sql = "SELECT * FROM categorias WHERE categoria = '$tmp_categoria'";
                 $resultado = $_conexion -> query($sql);
+                */
+                 // 1. Preparacion/ Prepare --> le vamos a quitar todas las variables
+                 $sql = $_conexion -> prepare("SELECT * FROM categorias WHERE categoria = ?");
+
+                 // 2. Enlazado/ Bind
+                 $sql -> bind_param("s", $categoria);
+                 // 3. Ejecución / Execute
+                 $sql -> execute(); 
                     
                 if($resultado -> num_rows > 0){
                     $err_categoria = "La categoria $tmp_categoria ya existe";
@@ -68,15 +77,43 @@
             }
 
             if(isset($categoria) && isset($descripcion)) { 
+                /*
                 $sql = "INSERT INTO categorias (categoria, descripcion) 
                     VALUES ('$categoria', '$descripcion')";
 
                 $_conexion -> query($sql);
+                */
+                // 1. Preparacion --> le vamos a quitar todas las variables
+                $sql = $_conexion -> prepare("INSERT INTO categorias (categoria, descripcion) 
+                VALUES (?,?)");
+
+                // 2. Enlazado 
+                $sql -> bind_param("ss", 
+                    $categoria, 
+                    $descripcion, 
+                ); //se pone s si es string e i si es int (si hubiera decimales se pone d)
+
+                // 3. Ejecución
+                $sql -> execute();
+                
             }
         }
 
+        /*
         $sql = "SELECT * FROM categorias ORDER BY categoria";
         $resultado = $_conexion -> query($sql);
+        */
+        // 1. Preparacion --> le vamos a quitar todas las variables
+        $sql = $_conexion -> prepare("SELECT * FROM categorias ORDER BY ?");
+
+        // 2. Enlazado 
+        $sql -> bind_param("s", $categoria); 
+
+        // 3. Ejecución
+        $sql -> execute();
+
+        // 4. Obtener/ Retrieve (para select que tenga algún parametro)
+        $resultado = $sql -> get_result();
         
         ?>
         <form class="col-6" action="" method="post" enctype="multipart/form-data">

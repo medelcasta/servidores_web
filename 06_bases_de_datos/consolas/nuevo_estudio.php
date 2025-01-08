@@ -22,11 +22,27 @@
         $fabricante= $_POST["fabricante"];
         $generacion = $_POST["generacion"];
         $unidades_vendidas = $_POST["unidades_vendidas"];
-
+        /*
         $sql = "INSERT INTO consolas (nombre, fabricante, generacion, unidades_vendidas)
                 VALUES ('$nombre', '$fabricante', $generacion, '$unidades_vendidas')";
 
         $_conexion -> query($sql);
+        */
+        // 1. Preparacion --> le vamos a quitar todas las variables
+        $sql = $_conexion -> prepare("INSERT INTO consolas 
+        (nombre, fabricante, generacion, unidades_vendidas)
+        VALUES (?,?,?,?)");
+
+        // 2. Enlazado 
+        $sql -> bind_param("ssii", 
+            $nombre, 
+            $fabricante, 
+            $generacion, 
+            $unidades_vendidas
+        ); //se pone s si es string e i si es int (si hubiera decimales se pone d)
+
+        // 3. Ejecución
+        $sql -> execute();
     }
     ?>
     <form action="" method="post">
