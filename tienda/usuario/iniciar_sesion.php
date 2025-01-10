@@ -56,8 +56,21 @@
                 }
 
                 if(isset($usuario) && isset($contrasena)){
+                    /*
                     $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
                     $resultado = $_conexion -> query($sql);
+                    */
+                    // 1. Preparacion --> le vamos a quitar todas las variables
+                    $sql = $_conexion -> prepare("SELECT * FROM usuarios WHERE usuario = ?");
+
+                    // 2. Enlazado 
+                    $sql -> bind_param("s", $categoria); 
+
+                    // 3. Ejecución
+                    $sql -> execute();
+
+                    // 4. Obtener/ Retrieve (para select que tenga algún parametro)
+                    $resultado = $sql -> get_result();
 
                     if($resultado -> num_rows == 0){
                         $err_usuario = "El usuario $usuario no existe";

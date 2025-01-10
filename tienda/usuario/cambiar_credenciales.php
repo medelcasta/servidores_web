@@ -22,8 +22,22 @@
         <h1>Cambiar contraseña</h1>
         <?php
         $usuario = $_GET["usuario"];
+        /*
         $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
         $resultado = $_conexion -> query($sql);
+        */
+        // 1. Preparacion --> le vamos a quitar todas las variables
+        $sql = $_conexion -> prepare("SELECT * FROM usuarios WHERE usuario = ?");
+
+        // 2. Enlazado 
+        $sql -> bind_param("s", $usuario); 
+
+        // 3. Ejecución
+        $sql -> execute();
+
+        // 4. Obtener/ Retrieve (para select que tenga algún parametro)
+        $resultado = $sql -> get_result();
+
         while($fila = $resultado -> fetch_assoc()) {
             $usuario = $fila["usuario"];
         }
@@ -63,20 +77,52 @@
             }
 
             if(isset($usuario) && isset($contrasena)){
+                /*
                 $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
                 $resultado = $_conexion -> query($sql);
+                */
+                // 1. Preparacion --> le vamos a quitar todas las variables
+                $sql = $_conexion -> prepare("SELECT * FROM usuarios WHERE usuario = ?");
+
+                // 2. Enlazado 
+                $sql -> bind_param("s", $usuario); 
+
+                // 3. Ejecución
+                $sql -> execute();
+
+                // 4. Obtener/ Retrieve (para select que tenga algún parametro)
+                $resultado = $sql -> get_result();
+
                 //var_dump($resultado);
 
                 if($resultado -> num_rows == 0){
                     $err_usuario = "El usuario no existe";
                 }else{
                     $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);
+                    /*
                     $sql = "UPDATE usuarios SET
                     contrasena = '$contrasena_cifrada'
                     WHERE usuario = '$usuario'
                     ";
 
                     $_conexion -> query($sql);
+                    */
+                    // 1. Preparacion --> le vamos a quitar todas las variables
+                    $sql = $_conexion -> prepare("UPDATE usuarios SET
+                    constrasena = ?,
+                    WHERE usuario = ? 
+                    ");
+
+                    // 2. Enlazado 
+                    $sql -> bind_param("ss",
+                        $contrasena,
+                        $usuario,
+                    ); //se pone s si es string e i si es int (si hubiera decimales se pone d)
+
+                    // 3. Ejecución
+                    $sql -> execute();
+                    $_conexion -> close();
+
                 }
             }
         }         
