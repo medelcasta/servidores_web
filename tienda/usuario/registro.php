@@ -31,9 +31,21 @@
                 if($tmp_usuario == ''){
                     $err_usuario = "El usuario es obligorio";
                 }else{
+                    /*
                     $sql = "SELECT * FROM usuarios WHERE usuario = '$tmp_usuario'";
                     $resultado = $_conexion -> query($sql);
-                    
+                    */
+                     // 1. Preparacion --> le vamos a quitar todas las variables
+                    $sql = $_conexion -> prepare("SELECT * FROM usuarios WHERE usuario =  ?");
+
+                    // 2. Enlazado 
+                    $sql -> bind_param("s", $usuario); 
+
+                    // 3. Ejecución
+                    $sql -> execute();
+
+                    // 4. Obtener/ Retrieve (para select que tenga algún parametro)
+                    $resultado = $sql -> get_result();
                     if($resultado -> num_rows == 1){
                         $err_usuario = "El usuario $tmp_usuario ya existe";
                     }else{       
@@ -67,9 +79,24 @@
                 }
                 
                 if(isset($usuario) && isset($contrasena)){
+                    /*
                     $sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada')";
 
                     $_conexion -> query($sql);
+                    */
+
+                    // 1. Preparacion --> le vamos a quitar todas las variables
+                    $sql = $_conexion -> prepare("INSERT INTO  usuarios VALUES (?,?)");
+
+                    // 2. Enlazado 
+                    $sql -> bind_param("ss", 
+                        $usuario, 
+                        $contrasena_cifrada
+                    ); //se pone s si es string e i si es int (si hubiera decimales se pone d)
+
+                    // 3. Ejecución
+                    $sql -> execute();
+
                     header("location: iniciar_sesion.php");
                     exit;
                 }

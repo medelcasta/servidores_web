@@ -64,7 +64,7 @@
                     $sql = $_conexion -> prepare("SELECT * FROM usuarios WHERE usuario = ?");
 
                     // 2. Enlazado 
-                    $sql -> bind_param("s", $categoria); 
+                    $sql -> bind_param("s", $usuario); 
 
                     // 3. Ejecución
                     $sql -> execute();
