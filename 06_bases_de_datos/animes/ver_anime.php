@@ -39,6 +39,9 @@
 
         // 3. Ejecución
         $sql -> execute();
+
+        // 4. Obtener/ Retrieve (para select que tenga algún parametro)
+        $resultado = $sql -> get_result();
         
         while($fila = $resultado -> fetch_assoc()) {
             $titulo = $fila["titulo"];
