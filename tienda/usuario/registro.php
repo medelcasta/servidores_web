@@ -46,6 +46,7 @@
 
                     // 4. Obtener/ Retrieve (para select que tenga algún parametro)
                     $resultado = $sql -> get_result();
+                    
                     if($resultado -> num_rows == 1){
                         $err_usuario = "El usuario $tmp_usuario ya existe";
                     }else{       
