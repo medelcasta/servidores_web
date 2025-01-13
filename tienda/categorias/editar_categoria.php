@@ -91,15 +91,14 @@
                 */
                  // 1. Preparacion --> le vamos a quitar todas las variables
                     $sql = $_conexion -> prepare("UPDATE categorias SET
-                    categoria = ?,
                     descripcion = ?
                     WHERE categoria = ? 
                     ");
 
                 // 2. Enlazado 
                 $sql -> bind_param("ss",
-                    $categoria,
                     $descripcion,
+                    $categoria
                 ); //se pone s si es string e i si es int (si hubiera decimales se pone d)
 
                 // 3. Ejecución

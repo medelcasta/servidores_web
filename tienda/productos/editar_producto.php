@@ -206,12 +206,12 @@
                     nombre = ?,
                     precio = ?,
                     categoria = ?,
-                    stock = ?
+                    stock = ?,
                     descripcion = ?
                     WHERE id_producto = ?");
 
                 // 2. Enlazado 
-                $sql -> bind_param("sisisi", 
+                $sql -> bind_param("sdsisi", 
                     $nombre, 
                     $precio, 
                     $categoria, 

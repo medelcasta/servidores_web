@@ -8,6 +8,8 @@
     <?php 
         require '../util/conexion.php'; 
         require '../util/depurar.php';
+        error_reporting( E_ALL );
+        ini_set("display_errors", 1 ); 
         session_start();
         if(isset($_SESSION["usuario"])){
             echo "<h2>Bienvenid@ ". $_SESSION["usuario"] ."</h2>";
@@ -46,6 +48,8 @@
                  $sql -> bind_param("s", $categoria);
                  // 3. Ejecución / Execute
                  $sql -> execute(); 
+
+                 $resultado = $sql -> get_result();
                     
                 if($resultado -> num_rows > 0){
                     $err_categoria = "La categoria $tmp_categoria ya existe";
@@ -84,8 +88,7 @@
                 $_conexion -> query($sql);
                 */
                 // 1. Preparacion --> le vamos a quitar todas las variables
-                $sql = $_conexion -> prepare("INSERT INTO categorias (categoria, descripcion) 
-                VALUES (?,?)");
+                $sql = $_conexion -> prepare("INSERT INTO categorias (categoria, descripcion) VALUES (?,?)");
 
                 // 2. Enlazado 
                 $sql -> bind_param("ss", 

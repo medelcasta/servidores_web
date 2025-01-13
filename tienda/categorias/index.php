@@ -58,6 +58,8 @@
 
                 // 3. Ejecución
                 $sql -> execute();
+
+                $resultado = $sql -> get_result();
                 
 
                 if($resultado -> num_rows >= 1){
@@ -71,6 +73,7 @@
 
                     // 2. Enlazado/ Bind
                     $sql -> bind_param("s", $categoria);
+
                     // 3. Ejecución / Execute
                     $sql -> execute();   
                 }
