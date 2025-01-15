@@ -2,7 +2,7 @@
     error_reporting( E_ALL );
     ini_set("display_errors", 1 );  
     header("Content-Type: application/json"); //Indica que esto es un json
-    include("conexion_pdo.php");
+    include("conexion_pdo2.php");
 
     //Cogemos el metodo con el que accedemos y lo guardamos en una variable
     $metodo = $_SERVER["REQUEST_METHOD"];
@@ -31,7 +31,7 @@
     }
 
     function manejarGet($_conexion){
-        $sql = "SELECT * FROM estudios";
+        $sql = "SELECT * FROM fabricantes";
         $stmt = $_conexion -> prepare($sql);
         $stmt -> execute();
         $resultado = $stmt -> fetchAll(PDO::FETCH_ASSOC); //Equivalente al getResult de mysqli
@@ -39,14 +39,13 @@
     }
 
     function manejarPost($_conexion, $entrada){
-        $sql = "INSERT INTO estudios (nombre_estudio, ciudad, anno_fundacion)
-            VALUES (:nombre_estudio, :ciudad, :anno_fundacion)";
+        $sql = "INSERT INTO fabricantes (fabricante, pais)
+            VALUES (:fabricante, :pais)";
 
         $stmt = $_conexion -> prepare($sql);
         $stmt -> execute([
-            "nombre_estudio" => $entrada["nombre_estudio"],
-            "ciudad" => $entrada["ciudad"],
-            "anno_fundacion" => $entrada["anno_fundacion"]
+            "fabricante" => $entrada["fabricante"],
+            "pais" => $entrada["pais"]
         ]);
 
         if($stmt){
