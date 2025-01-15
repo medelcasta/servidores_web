@@ -23,7 +23,7 @@
             echo json_encode(["metodo" => "put"]);
             break;
         case "DELETE":
-            echo json_encode(["metodo" => "delete"]);
+            manejarDelete($_conexion, $entrada);
             break;     
         default:
             echo json_encode(["metodo" => "otro"]);
@@ -54,6 +54,18 @@
             echo json_encode(["mensaje" => "el estudio se ha insertado correctamente"]);
         }else{
             echo json_encode(["mensaje" => "error al insertar el estudio"]);
+        }
+    }
+    function manejarDelete($_conexion, $entrada){
+        $sql = "DELETE FROM animes WHERE id_anime = :id_anime";
+        $stmt = $_conexion -> prepare($sql);
+        $stmt -> execute([
+            "id_anime" => $entrada["id_anime"]
+        ]);
+        if($stmt){
+            echo json_encode(["mensaje" => "el anime se ha borrado correctamente"]);
+        }else{
+            echo json_encode(["mensaje" => "error al borrar el anime"]);
         }
     }
 ?>

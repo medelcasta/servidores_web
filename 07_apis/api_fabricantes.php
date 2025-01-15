@@ -23,7 +23,7 @@
             echo json_encode(["metodo" => "put"]);
             break;
         case "DELETE":
-            echo json_encode(["metodo" => "delete"]);
+            manejarDelete($_conexion, $entrada);
             break;     
         default:
             echo json_encode(["metodo" => "otro"]);
@@ -52,6 +52,19 @@
             echo json_encode(["mensaje" => "el estudio se ha insertado correctamente"]);
         }else{
             echo json_encode(["mensaje" => "error al insertar el estudio"]);
+        }
+    }
+
+    function manejarDelete($_conexion, $entrada){
+        $sql = "DELETE FROM fabricantes WHERE fabricante = :fabricante";
+        $stmt = $_conexion -> prepare($sql);
+        $stmt -> execute([
+            "fabricante" => $entrada["fabricante"]
+        ]);
+        if($stmt){
+            echo json_encode(["mensaje" => "el fabricante se ha borrado correctamente"]);
+        }else{
+            echo json_encode(["mensaje" => "error al borrar el fabricante"]);
         }
     }
 ?>
