@@ -50,6 +50,11 @@
             $imagen = $fila["imagen"];
             $descripcion = $fila["descripcion"];
         }
+        
+        /*
+        $sql = "SELECT * FROM categorias ORDER BY categoria";
+        $resultado = $_conexion -> query($sql);
+        */
         // 1. Preparacion --> le vamos a quitar todas las variables
         $sql = $_conexion -> prepare("SELECT * FROM categorias ORDER BY ?");
 
@@ -61,10 +66,7 @@
 
         // 4. Obtener/ Retrieve (para select que tenga algún parametro)
         $resultado = $sql -> get_result();
-        /*
-        $sql = "SELECT * FROM categorias ORDER BY categoria";
-        $resultado = $_conexion -> query($sql);
-        */
+        
         $categorias_array = [];
 
         while($fila = $resultado -> fetch_assoc()) {

@@ -18,9 +18,22 @@
             if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $usuario = $_POST["usuario"];
                 $contrasena = $_POST["contrasena"];
-
+                /*
                $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
                $resultado = $_conexion -> query($sql);
+               */
+              //1. Praparacion 
+              $sql = $_conexion -> prepare("SELECT * FROM usuarios WHERE usuario = ?");
+
+              //2. Enlazado
+              $sql -> bind_param("s", $usuario);
+
+              //3. Ejecucion
+              $sql -> execute();
+
+              //4. Obtener
+              $resultado = $sql -> get_result();S
+
                //var_dump($resultado);
 
                 if($resultado -> num_rows == 0){

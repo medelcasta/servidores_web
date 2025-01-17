@@ -20,10 +20,21 @@
                 $contrasena = $_POST["contrasena"];
 
                 $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);
-
+                /*
                 $sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada')";
-
                 $_conexion -> query($sql);
+                */
+
+                //1. Preparacion
+                $sql = $_conexion -> prepare("INSERT * INTO usuario VALUES (?, ?)");
+
+                //2. Enlace
+                $sql -> bind_param("ss", $usuario, $contrasena);
+
+                //3. Ejecución 
+                $sql -> execute();
+
+                
                 header("location: iniciar_sesion.php");
                 exit;
             }
