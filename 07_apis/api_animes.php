@@ -20,7 +20,7 @@
             manejarPost($_conexion, $entrada);
             break;
         case "PUT":
-            echo json_encode(["metodo" => "put"]);
+            manejarPut($_conexion, $entrada);
             break;
         case "DELETE":
             manejarDelete($_conexion, $entrada);
@@ -66,6 +66,28 @@
             echo json_encode(["mensaje" => "el anime se ha borrado correctamente"]);
         }else{
             echo json_encode(["mensaje" => "error al borrar el anime"]);
+        }
+    }
+
+    function manejarPut($_conexion, $entrada){
+        $sql = "UPDATE animes SET
+            titulo = :titulo,
+            nombre_estudio = :nombre_estudio,
+            anno_estreno = :anno_estreno,
+            num_temporadas = :num_temporadas
+            WHERE id_anime = :id_anime";
+        $stmt = $_conexion -> prepare($sql);
+        $stmt -> execute([
+            "titulo" => $entrada["titulo"],
+            "nombre_estudio" => $entrada["nombre_estudio"],
+            "anno_estreno" => $entrada["anno_estreno"],
+            "num_temporadas" => $entrada["num_temporadas"],
+            "id_anime" => $entrada["id_anime"]
+        ]);
+        if($stmt){
+            echo json_encode(["mensaje" => "el anime se ha actualizado correctamente"]);
+        }else{
+            echo json_encode(["mensaje" => "error al actualizar el anime"]);
         }
     }
 ?>
