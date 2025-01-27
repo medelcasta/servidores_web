@@ -11,8 +11,8 @@
     ?>
 </head>
 <body>
-<?php 
-        $apiUrl = "https://api.jikan.moe/v4/top/anime";
+    <?php 
+        $apiUrl = "https://api.jikan.moe/v4/producers";
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $apiUrl);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -20,44 +20,31 @@
         curl_close($curl);
 
         $datos = json_decode($respuesta, true);
-        $animes = $datos["data"];
+        $producer = $datos["data"];
         //print_r($animes);
     ?>
-    <!--
-    <ol>
-
-        <?php /*
-        foreach($animes as $anime){?>
-            <li> <?php echo $anime["title"] ?></li>
-        <?php } */ ?>
-    </ol>
-    -->
     <div class="container">
         <table class="table table-striped table-hover">
             <thead class="table-dark">
                 <tr>
-                    <th>Posición</th>
-                    <th>Titulo</th>
-                    <th>Nota</th>
+                    <th>Nombre</th>
                     <th>Imagen</th>
+                    <th>Info Productor</th>
                 </tr>
             </thead>
             <tbody>
-                <?php 
-                    foreach($animes as $anime){ ?>
-                        <tr>
-                            <td><?php echo $anime["rank"]?></td>
-                            <td>
-                                <a href="anime.php?id=<?php echo $anime["mal_id"] ?>">
-                                    <?php echo $anime["title"]?>
-                                </a>
-                            </td>
-                            <td><?php echo $anime["score"]?></td>
-                            <td>
-                                <img width="100px" src="<?php echo $anime["images"]["jpg"]["image_url"] ?>">
-                            </td>
-                        </tr>
-                    <?php } ?>
+                <tr>
+                    <td>
+                        <?php
+                            print_r($producer["titles"]);
+                            /*
+                            foreach($titles as $title){
+                                if($title["type"] == "Default") { ?>
+                                    <?php echo $title["title"] ?>          
+                                <?php }
+                            } */ ?>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
