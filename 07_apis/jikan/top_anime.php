@@ -11,8 +11,30 @@
     ?>
 </head>
 <body>
-<?php 
+    <div class="container">
+        <h1>Elige por donde filtrar</h1>
+        <form action="" method="get">
+        <div class="form-check">
+            <input type="radio" name="type" id="rb1" value="TV">
+            <label for="rb1">Serie</label>
+        </div>
+        <div class="form-check">
+            <input type="radio" name="type" id="rb2" value="Movie">
+            <label  for="rb2">Película</label>
+        </div>
+        <div class="form-check">
+            <input type="radio" name="type" id="rb3" value="">
+            <label for="rb3">Todos</label>
+        </div>
+        <input class="btn btn-danger" type="submit" value="Filtrar">
+        </form>
+    </div>
+<?php
         $apiUrl = "https://api.jikan.moe/v4/top/anime";
+        if(isset($_GET["type"])){
+            $type = $_GET["type"];
+            $apiUrl = "https://api.jikan.moe/v4/top/anime?type=$type";
+        }
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $apiUrl);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -21,17 +43,18 @@
 
         $datos = json_decode($respuesta, true);
         $animes = $datos["data"];
+        $pagination = $datos["pagination"];
         //print_r($animes);
-    ?>
-    <!--
-    <ol>
 
-        <?php /*
-        foreach($animes as $anime){?>
-            <li> <?php echo $anime["title"] ?></li>
-        <?php } */ ?>
-    </ol>
-    -->
+            if(isset($_GET["page"])){
+                $page = $_GET["page"];
+                $apiUrl = "https://api.jikan.moe/v4/top/anime?page=$page";
+            }else{
+                $page = 1;
+                $apiUrl = "https://api.jikan.moe/v4/top/anime?page=$page";
+            }
+        ?>
+   
     <div class="container">
         <table class="table table-striped table-hover">
             <thead class="table-dark">
@@ -60,6 +83,20 @@
                     <?php } ?>
             </tbody>
         </table>
+        <?php 
+            if($pagination["current_page"] > 1){ 
+                $anterior = $page - 1;
+                ?>
+                <a href="https://api.jikan.moe/v4/top_anime?page=<?php echo $anterior;?>"> Anterior</a>
+            <?php } 
+            if($pagination["has_next_page"]){
+                $siguiente = $page + 1;
+                ?>
+                <a href="https://api.jikan.moe/v4/top_anime?page=<?php echo $siguiente;?>"> Siguiente</a>
+            <?php } ?>
+        ?>
+       
+        
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
