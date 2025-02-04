@@ -33,18 +33,20 @@
                 </tr>
             </thead>
             <tbody>
+                <?php foreach($producer as $prod) { ?>
                 <tr>
                     <td>
                         <?php
-                            print_r($producer["titles"]);
-                            /*
-                            foreach($titles as $title){
+                            foreach($prod["titles"] as $title){
                                 if($title["type"] == "Default") { ?>
                                     <?php echo $title["title"] ?>          
                                 <?php }
-                            } */ ?>
+                            } ?>
                     </td>
-                </tr>
+                    <td><img width="100px" src="<?php echo $prod["images"]["jpg"]["image_url"] ?>"></td>
+                    <td><?php echo $prod["about"]; ?></td>
+                 </tr>
+                <?php } ?>
             </tbody>
         </table>
     </div>

@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <?php
-        error_reporting( E_ALL );
-        ini_set("display_errors", 1 );    
+        error_reporting(E_ALL);
+        ini_set("display_errors", 1);
     ?>
 </head>
 <body>
@@ -19,8 +19,7 @@
         curl_close($curl);
 
         $datos = json_decode($respuesta, true);
-        $personajes = $datos["results"]
-        
+        $personajes = $datos["results"];
     ?>
     <form method="GET" action="">
         <label>Cantidad de personajes</label>
@@ -39,17 +38,30 @@
             <option value="Human">Human</option>
             <option value="Alien">Alien</option>
         </select>
+        <br>
+        <input type="submit" value="Buscar">
     </form>
     <?php 
-        $genero = $_GET["genero"];
-        $cantidad = $_GET["cantidad"];
-        $especie = $_GET["especie"];
-        if($personajes["gender"] == $genero && $personajes[""]) 
-            foreach($personajes as $personaje){
-                $imagen = $personaje["image"];?>
-                <img src="<?php echo $imagen;?>">
+        if (isset($_GET["genero"]) && isset($_GET["cantidad"]) && isset($_GET["especie"])) {
+            $genero = $_GET["genero"];
+            $cantidad = $_GET["cantidad"];
+            $especie = $_GET["especie"];
+            $contador = 0;
 
-           <?php } ?>
-
+            foreach ($personajes as $personaje) {
+                if ($contador >= $cantidad) break;
+                if ($personaje["gender"] == $genero && $personaje["species"] == $especie) {
+                    $contador++; ?>
+                    <div>
+                        <img src="<?php echo $personaje['image']; ?>" alt="<?php echo $personaje['name']; ?>">
+                        <p>Nombre: <?php echo $personaje['name']; ?></p>
+                        <p>Género: <?php echo $personaje['gender']; ?></p>
+                        <p>Especie: <?php echo $personaje['species']; ?></p>
+                        <p>Origen: <?php echo $personaje['origin']['name']; ?></p>
+                    </div>
+                <?php }
+            }
+        }
+    ?>
 </body>
 </html>
