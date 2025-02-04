@@ -32,7 +32,7 @@
                     <?php } else {
                         foreach ($subrazas as $subraza) { ?>
                             <option value="<?php echo $raza . '/' . $subraza; ?>"><?php echo $raza . ' ' . $subraza; ?></option>
-                        <?php}
+                        <?php }
                     }
                 }
             ?>
