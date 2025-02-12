@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CocheController;
 use App\Http\Controllers\ModeloController;
+use App\Http\Controllers\MarcaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,8 @@ use App\Http\Controllers\ModeloController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::resource('/marcas', MarcaController::class);
+
 Route::get('/coches', [CocheController::class, 'index']);
 
 Route::get('/modelos', [ModeloController::class, 'index']);
