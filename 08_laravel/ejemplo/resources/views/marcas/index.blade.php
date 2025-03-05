@@ -19,6 +19,8 @@
                 <th>Marca</th>
                 <th>Año fundacion</th>
                 <th>Pais</th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -27,6 +29,16 @@
                     <td>{{$marca -> marca}}</td>
                     <td>{{$marca -> ano_fundacion}}</td>
                     <td>{{$marca -> pais}}</td>
+                    <td>
+                        <a href="{{route('marcas.show', ["marca" => $marca -> id])}}">Ver</a>
+                    </td>
+                    <td>
+                        <form action="{{route('marcas.destroy', ["marca" => $marca -> id])}}" method="post">
+                            @csrf 
+                            {{ method_field('DELETE')}}
+                            <input type="submit" value="Borrar">
+                        </form>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

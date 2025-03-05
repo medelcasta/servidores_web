@@ -61,7 +61,9 @@ class MarcaController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $marca  = Marca::find($id);
+
+        return view('marcas/edit', ["marca" => $marca]);
     }
 
     /**
@@ -69,7 +71,14 @@ class MarcaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $marca = Marca::find($id);
+
+        $marca -> marca = $request -> input("marca");
+        $marca -> ano_fundacion = $request -> input("ano_fundacion");
+        $marca -> pais = $request -> input("pais");
+        $marca -> save();
+
+        return redirect('marcas');
     }
 
     /**
@@ -77,6 +86,10 @@ class MarcaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $marca = Marca::find($id);
+
+        $marca -> delete();
+
+        return redirect("marcas");
     }
 }

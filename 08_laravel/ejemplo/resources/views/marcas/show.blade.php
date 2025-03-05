@@ -9,5 +9,9 @@
 <body>
     <h1>Marca</h1>
     <h3>Marca: {{$marca -> marca}}</h3>
+    <a href="{{route('marcas.edit', ["marca" => $marca -> id])}}">Editar</a>
+    <br>
+    <a href="{{route('marcas.index')}}">Volver</a>
+    
 </body>
 </html>
